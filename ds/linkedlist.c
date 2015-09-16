@@ -108,7 +108,7 @@ void print(List_Pointer head)
 
 void test_reverse(n)
 {
-	printf("Testing InvertLinkedList with a linked list containing %d node(s) ...\n", n);
+	printf("Testing reverse with a linked list containing %d node(s) ...\n", n);
 	List_Pointer head = init(n);
 	print(head);
 	List_Pointer reversed = reverse1(head);
@@ -117,13 +117,60 @@ void test_reverse(n)
 	printf("\n");
 }
 
+ListNode * locate(List_Pointer head, int d)
+{
+    ListNode *p, *q;
+    p = head;
+    q = head->next;
+    while (q != NULL && q->data > d)
+    {
+        p = q;
+        q = q->next;
+    }
+    
+    return p;
+}
+
+void insertSortedList(List_Pointer head, int d)
+{
+    ListNode * p = locate(head, d);
+    if (p == NULL)
+        error("Can't find a node.");
+        
+    ListNode * n = (ListNode *)malloc(sizeof(ListNode));
+    n->data = d;
+    n->next = p->next;
+    p->next = n;
+}
+
+void test_insert_into_sorted_list()
+{
+    printf("Testing insertSortedList ...\n");
+    List_Pointer head = init(10);
+    print(head);
+    insertSortedList(head, 7);
+    print(head);
+    insertSortedList(head, 0);
+    print(head);
+    insertSortedList(head, 17);
+    print(head);
+    printf("\n");
+    
+    head = init(0);
+    print(head);
+    insertSortedList(head, 7);
+    print(head);
+}
+
 int main(void)
 {
-	test_reverse(7);
-	test_reverse(2);	
-	test_reverse(1);	
-	test_reverse(0);
+	//test_reverse(7);
+	//test_reverse(2);	
+	//test_reverse(1);	
+	//test_reverse(0);
 	//test_reverse(100);
+	
+	test_insert_into_sorted_list(10);
 	
 	return 0;
 }
