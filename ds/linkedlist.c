@@ -26,7 +26,7 @@ List_Pointer init(int n)
 	printf("add a head node ...\n");	
 	List_Pointer head = (ListNode *)malloc(sizeof(ListNode));
 	head->next = NULL;
-	
+	ListNode * r = head;
 	ListNode * node;
 	int i;
 	for(i=1; i<=n; i++)
@@ -34,9 +34,10 @@ List_Pointer init(int n)
 		printf("add a new node at %d with the data: %d ...\n", i, i);
 		node = (ListNode *)malloc(sizeof(ListNode));
 		node->data = i;
-		node->next = head->next;
-		head->next = node;
+		r->next = node;
+		r = node;
 	}
+	r->next = NULL;
 	printf("Initializing a linked list with %d node(s) ... done.\n", n);
 	
 	return head;
@@ -162,15 +163,100 @@ void test_insert_into_sorted_list()
     print(head);
 }
 
+List_Pointer split(List_Pointer a)
+{
+	List_Pointer b = (List_Pointer)malloc(sizeof(ListNode));
+	ListNode * br = b;
+	ListNode *p, *q;
+	int i = 1;
+	p = a->next;
+	while(p != NULL)
+	{
+		if (i % 2 == 0)
+		{
+			// remove the node from a
+			q->next = p->next;
+			// append the node to b
+			br->next = p;
+			br = p;			
+		}
+		
+		q = p;
+		p = p->next;
+		i++;
+	}
+	br->next = NULL;
+	
+	return b;
+}
+
+List_Pointer split1(List_Pointer a)
+{
+	List_Pointer b = (List_Pointer)malloc(sizeof(ListNode));
+	ListNode * br = b;
+	ListNode * ar = a;
+	ListNode *q = a->next;
+	while(q != NULL)
+	{
+		ar->next = q;
+		ar = q;
+		q = q->next;
+		if (q)
+		{
+			br->next = q;
+			br = q;
+			q = q->next;
+		}
+	}
+	ar->next = br->next = NULL;
+	
+	return b;
+}
+
+List_Pointer split2(List_Pointer a)
+{
+	List_Pointer b = (List_Pointer)malloc(sizeof(ListNode));
+	ListNode * br = b;
+	ListNode *p, *q;
+	q = a->next;
+	while(q != NULL)
+	{
+		p = q;
+		q = q->next;
+		if (q)
+		{
+			p->next = q->next;		
+			br->next = q;
+			br = q;
+			q = q->next;
+		}
+	}
+	br->next = NULL;
+	
+	return b;
+}
+
+void test_split()
+{
+	printf("Testing split ...\n");
+	List_Pointer a = init(10);
+	print(a);
+	List_Pointer b = split2(a);
+	print(b);
+	print(a);
+	printf("\n");
+}
+
 int main(void)
 {
+	test_split();
 	//test_reverse(7);
 	//test_reverse(2);	
 	//test_reverse(1);	
 	//test_reverse(0);
 	//test_reverse(100);
 	
-	test_insert_into_sorted_list(10);
+	//test_insert_into_sorted_list(10);
 	
 	return 0;
 }
