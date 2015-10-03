@@ -225,12 +225,70 @@ void test_remove()
 	printf("\n");
 }
 
+void removeSameFromA(SequentialList * a, SequentialList * b)
+{
+	int i = 0;
+	int j = 0;
+	int count = 0;
+	
+	while (i <= a->length -1 && j <= b->length -1)
+	{
+		if (a->data[i] == b->data[j])
+		{
+			removeNodeAtStorageIndex(a, i);
+		}
+		else if (a->data[i] > b->data[j])
+		{
+			j ++;		
+		}
+		else
+		{
+			i ++;
+		}
+		
+		count ++;
+	}
+	
+	printf("Loop times: %d\n", count);
+}
+
+void test_removeSameFromA()
+{
+	printf("Testing removeSameFromA ...\n");
+	int array1[10] = {1, 3, 7, 11, 13, 17, 20, 23, 30, 41};	
+	SequentialList a;
+	a.length = 0;
+	int i;
+	for(i=0; i<10; i++)
+	{
+		a.data[i] =  array1[i];
+		a.length ++;
+	}
+	print(&a);
+	
+	int array2[8] = {1, 2, 9, 13, 23, 41, 70, 80};
+	SequentialList b;
+	b.length = 0;
+	int j;
+	for(j=0; j<8; j++)
+	{
+		b.data[j] = array2[j];
+		b.length ++;
+	}
+	print(&b);
+	
+	removeSameFromA(&a, b);
+	print(&a);
+	print(&b);
+}
+
 int main(void)
 {
+	test_removeSameFromA();
 	//test_reverse(10);
 	//test_reverse(11);
 	
-	test_remove();
+	//test_remove();
 	
 	return 0;
 }
