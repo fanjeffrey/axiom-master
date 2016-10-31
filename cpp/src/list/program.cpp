@@ -31,6 +31,9 @@ int main()
     
     Display<int>(isl);
     
+    isl.Insert(7, 3);
+    Display<int>(isl);
+    
     isl.Delete(7);
     Display<int>(isl);
     

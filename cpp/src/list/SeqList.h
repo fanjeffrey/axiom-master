@@ -87,7 +87,7 @@ void SeqList<T>::Insert(T value, int index)
         throw "Wrong position for insertion.";
     }
     
-    for (int i = length - 1; i >= index; i--)
+    for (int i = length - 1; i >= index - 1; i--)
     {
         elements[i + 1] = elements[i];
     }
