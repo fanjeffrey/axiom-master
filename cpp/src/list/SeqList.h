@@ -11,7 +11,6 @@ class SeqList : public LinearList <T>
     public:
         SeqList();
         virtual void Init();
-        virtual int Length();
         virtual T Get(int index);
         virtual T* Elements();
         virtual int Locate(T value);
@@ -19,7 +18,6 @@ class SeqList : public LinearList <T>
         virtual T Delete(int index);
     protected:
         T elements[Capacity];
-        int length;
 };
 
 template <class T>
@@ -36,12 +34,6 @@ void SeqList<T>::Init()
 }
 
 template <class T>
-int SeqList<T>::Length()
-{
-    return length;
-}
-
-template <class T>
 T SeqList<T>::Get(int index)
 {
     if (length == 0)
@@ -51,7 +43,7 @@ T SeqList<T>::Get(int index)
     
     if (index < 1 || index > length)
     {
-        throw "No data at this position.";    
+        throw "No data at that position.";    
     }
     
     return elements[index - 1];
