@@ -71,7 +71,7 @@ void SeqList<T>::Insert(T value, int index)
 {    
     if (length >= Capacity)
     {
-        throw "The list is overflow.";
+        throw "The list is full.";
     }
     
     if (index < 1 || index > length + 1)
