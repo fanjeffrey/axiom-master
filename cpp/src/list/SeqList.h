@@ -3,64 +3,37 @@
 
 #include "LinearList.h"
 
-#define Capacity 100
-
 template <class T>
-class SeqList : public LinearList <T>
+class SeqList : public LinearList, public ILinearList <T>
 {
     public:
-        SeqList();
-        virtual void Init();
+        // from ILinearList
         virtual T Get(int index);
-        virtual T* Elements();
         virtual int Locate(T value);
         virtual void Insert(T value, int index);
         virtual T Delete(int index);
+
+        // native
+        virtual T* Elements();
     protected:
         T elements[Capacity];
 };
 
-template <class T>
-SeqList<T>::SeqList()
-{
-    T elements[Capacity];
-    length = 0;
-}
-
-template <class T>
-void SeqList<T>::Init()
-{
-    length = 0;
-}
-
+//
 template <class T>
 T SeqList<T>::Get(int index)
 {
-    if (length == 0)
-    {
-        throw "The list is empty.";      
-    }
-    
-    if (index < 1 || index > length)
-    {
-        throw "No data at that position.";    
-    }
+    ValidateBeforeGetting(index);
     
     return elements[index - 1];
 }
 
 template <class T>
-T* SeqList<T>::Elements()
-{
-    return elements;
-}
-
-template <class T>
 int SeqList<T>::Locate(T value)
 {
-    for(int i=0; i<length; i++)
+    for(int i=1; i<=length; i++)
     {
-        if (elements[i] == value) return i;
+        if (elements[i-1] == value) return i;
     }
     
     return -1;
@@ -69,15 +42,7 @@ int SeqList<T>::Locate(T value)
 template <class T>
 void SeqList<T>::Insert(T value, int index)
 {    
-    if (length >= Capacity)
-    {
-        throw "The list is full.";
-    }
-    
-    if (index < 1 || index > length + 1)
-    {
-        throw "Wrong position for insertion.";
-    }
+    ValidateBeforeInsertion(index);
     
     for (int i = length - 1; i >= index - 1; i--)
     {
@@ -91,15 +56,7 @@ void SeqList<T>::Insert(T value, int index)
 template <class T>
 T SeqList<T>::Delete(int index)
 {    
-    if (length == 0)
-    {
-        throw "The list is empty.";
-    }
-    
-    if (index < 1 || index > length)
-    {
-        throw "Wrong position for deletion.";
-    }
+    ValidateBeforeDeleteion(index);
     
     T temp = elements[index - 1];
     
@@ -111,6 +68,13 @@ T SeqList<T>::Delete(int index)
     length --;
     
     return temp;
+}
+
+//
+template <class T>
+T* SeqList<T>::Elements()
+{
+    return elements;
 }
 
 #endif
