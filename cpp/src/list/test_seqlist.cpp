@@ -75,7 +75,7 @@ int main()
         isl.Delete(1);
         Display<int>(isl);
 
-        cout << "Inserting 11 at 12 ..." << endl;
+        cout << "Inserting 11 at 11 ..." << endl;
         isl.Insert(11, 11);
         Display<int>(isl);
         cout << "Deleting 11 ..." << endl;

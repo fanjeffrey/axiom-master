@@ -12,9 +12,6 @@ class SeqList : public LinearList, public ILinearList <T>
         virtual int Locate(T value);
         virtual void Insert(T value, int index);
         virtual T Delete(int index);
-
-        // native
-        virtual T* Elements();
     protected:
         T elements[Capacity];
 };
@@ -41,7 +38,7 @@ int SeqList<T>::Locate(T value)
 
 template <class T>
 void SeqList<T>::Insert(T value, int index)
-{    
+{
     ValidateBeforeInsertion(index);
     
     for (int i = length - 1; i >= index - 1; i--)
@@ -55,7 +52,7 @@ void SeqList<T>::Insert(T value, int index)
 
 template <class T>
 T SeqList<T>::Delete(int index)
-{    
+{
     ValidateBeforeDeleteion(index);
     
     T temp = elements[index - 1];
@@ -68,13 +65,6 @@ T SeqList<T>::Delete(int index)
     length --;
     
     return temp;
-}
-
-//
-template <class T>
-T* SeqList<T>::Elements()
-{
-    return elements;
 }
 
 #endif
