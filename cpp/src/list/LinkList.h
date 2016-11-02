@@ -1,29 +1,17 @@
+#if !defined(LinkList_H)
+#define LinkList_H
+
 #include "LinearList.h"
 
-template <class T>
-class LinkList : public LinearList <T>
-{
-    public:
-        LinkList() {head = new LinkListNode;}
-        virtual ~LinkList() {Dispose();}
-        virtual void Init();
-        virtual T Get(int index);
-        virtual int Locate(T value);
-        virtual void Insert(T value, int index);
-        virtual T Delete(int index);
-        virtual bool IsEmpty() {return head == nullptr || head->next == nullptr;}
-        virtual bool IsFull() {return length > 100;}
-    protected:
-        LinkListNode<T> * head;
-        virtual void Dispose();
-};
+// forward declaration
+template <class T> class LinkList;
 
 template <class T>
 class LinkListNode
 {
     friend class LinkList<T>;
     public:
-        LinkListNode():next(nullptr){}
+        LinkListNode():next(NULL){}
         virtual T GetData(){return data;}
         virtual LinkListNode<T> * GetNext() {return next;}
     private:
@@ -32,25 +20,32 @@ class LinkListNode
 };
 
 template <class T>
-void LinkList<T>::Init()
+class LinkList : public LinearList, public ILinearList <T>
 {
-    head->next = nullptr;
-}
+    // methods:
+    public:
+        LinkList() {Head = new LinkListNode<T>;}
+        virtual ~LinkList() {Dispose();}
+        
+        // from ILinearList
+        virtual T Get(int index);
+        virtual int Locate(T value);
+        virtual void Insert(T value, int index);
+        virtual T Delete(int index);
+    protected:
+        virtual void Dispose();
+    
+    // fields:
+    public:
+        LinkListNode<T> * Head;
+};
 
 template <class T>
 T LinkList<T>::Get(int index)
 {    
-    if (IsEmpty())
-    {
-        throw "The list is empty.";      
-    }
-    
-    if (index < 1 || index > length)
-    {
-        throw "No data at that position.";    
-    }
+    ValidateBeforeGetting(index);
 
-    LinkListNode * p = head->next;
+    LinkListNode<T> * p = Head->next;
     while(p && --index)
     {
         p = p->next;
@@ -62,8 +57,8 @@ T LinkList<T>::Get(int index)
 template <class T>
 int LinkList<T>::Locate(T value)
 {
-    int index = 0;
-    LinkListNode * p = head->next;
+    int index = 1;
+    LinkListNode<T> * p = Head->next;
     while(p && p->data != value)
     {
         index ++;
@@ -79,42 +74,28 @@ int LinkList<T>::Locate(T value)
 template <class T>
 void LinkList<T>::Insert(T value, int index)
 {
-    if (IsFull())
-    {
-        throw "The list is full.";
-    }
+    ValidateBeforeInsertion(index);
     
-    if (index < 1 || index > length + 1)
-    {
-        throw "Wrong position for insertion.";
-    }
-    
-    LinkListNode * p = head;
+    LinkListNode<T> * p = Head;
     while (p && --index)
     {
         p = p->next;
     }
     
-    LinkListNode * n = new LinkListNode;
+    LinkListNode<T> * n = new LinkListNode<T>;
     n->data = value;
     n->next = p->next;
-    p->next = n;    
+    p->next = n;
+
+    length ++;
 }
 
 template <class T>
 T LinkList<T>::Delete(int index)
 {
-    if (IsEmpty())
-    {
-        throw "The list is empty.";
-    }
+    ValidateBeforeDeleteion(index);
     
-    if (index < 1 || index > length)
-    {
-        throw "Wrong position for deletion.";
-    }
-    
-    LinkListNode * p = head;
+    LinkListNode<T> * p = Head;
     while (p && --index)
     {
         p = p->next;
@@ -122,11 +103,13 @@ T LinkList<T>::Delete(int index)
     
     if (p)
     {
-        LinkListNode * t = p->next;
+        LinkListNode<T> * t = p->next;
         p->next = t->next;
         
         T retVal = t->data;
         delete t;
+
+        length --;
         
         return retVal;
     }
@@ -139,5 +122,13 @@ T LinkList<T>::Delete(int index)
 template <class T>
 void LinkList<T>::Dispose()
 {
-
+    LinkListNode<T> * t = Head->next;
+    while(t)
+    {
+        Head->next = t->next;
+        delete t;
+        t = Head->next;
+    }
 }
+
+#endif

@@ -24,9 +24,8 @@ int main()
         for(int i=1; i<=10; i++)
         {
             int val = i * 2;
-            cout << "Inserting " << val << " at " << isl.Length() << "..." << endl;
             isl.Insert(val, isl.Length() + 1);
-            cout << "Inserted. length = " << isl.Length() << endl;
+            cout << val << " inserted. length = " << isl.Length() << endl;
         }    
         Display<int>(isl);
         
