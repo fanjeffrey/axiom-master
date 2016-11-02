@@ -33,3 +33,6 @@
 
 # Out folder
 out/
+
+# vscode
+.vscode/
