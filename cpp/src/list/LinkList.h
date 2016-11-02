@@ -11,7 +11,7 @@ class LinkListNode
 {
     friend class LinkList<T>;
     public:
-        LinkListNode():next(NULL){}
+        LinkListNode():next(nullptr){}
         virtual T GetData(){return data;}
         virtual LinkListNode<T> * GetNext() {return next;}
     private:
@@ -24,7 +24,7 @@ class LinkList : public LinearList, public ILinearList <T>
 {
     // methods:
     public:
-        LinkList() {Head = new LinkListNode<T>;}
+        LinkList() {head = new LinkListNode<T>;}
         virtual ~LinkList() {Dispose();}
         
         // from ILinearList
@@ -36,8 +36,8 @@ class LinkList : public LinearList, public ILinearList <T>
         virtual void Dispose();
     
     // fields:
-    public:
-        LinkListNode<T> * Head;
+    protected:
+        LinkListNode<T> * head;
 };
 
 template <class T>
@@ -45,7 +45,7 @@ T LinkList<T>::Get(int index)
 {    
     ValidateBeforeGetting(index);
 
-    LinkListNode<T> * p = Head->next;
+    LinkListNode<T> * p = head->next;
     while(p && --index)
     {
         p = p->next;
@@ -58,7 +58,7 @@ template <class T>
 int LinkList<T>::Locate(T value)
 {
     int index = 1;
-    LinkListNode<T> * p = Head->next;
+    LinkListNode<T> * p = head->next;
     while(p && p->data != value)
     {
         index ++;
@@ -76,7 +76,7 @@ void LinkList<T>::Insert(T value, int index)
 {
     ValidateBeforeInsertion(index);
     
-    LinkListNode<T> * p = Head;
+    LinkListNode<T> * p = head;
     while (p && --index)
     {
         p = p->next;
@@ -95,7 +95,7 @@ T LinkList<T>::Delete(int index)
 {
     ValidateBeforeDeleteion(index);
     
-    LinkListNode<T> * p = Head;
+    LinkListNode<T> * p = head;
     while (p && --index)
     {
         p = p->next;
@@ -122,12 +122,12 @@ T LinkList<T>::Delete(int index)
 template <class T>
 void LinkList<T>::Dispose()
 {
-    LinkListNode<T> * t = Head->next;
+    LinkListNode<T> * t = head->next;
     while(t)
     {
-        Head->next = t->next;
+        head->next = t->next;
         delete t;
-        t = Head->next;
+        t = head->next;
     }
 }
 

@@ -7,10 +7,12 @@ using namespace std;
 
 template <class T>
 void Display(SeqList<T> & list)
-{
-    cout << "Elements: " << list.Length() << endl;
-    T * data = list.Elements();
-    copy(data, data + list.Length(), ostream_iterator<T>(cout, " "));
+{    
+    cout << list.Length() << " element(s): ";
+    for(int i=1; i<=list.Length(); i++)
+    {
+        cout << list.Get(i) << " ";
+    }
     cout << endl;
 }
 

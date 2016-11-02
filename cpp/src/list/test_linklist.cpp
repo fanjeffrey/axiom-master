@@ -6,12 +6,10 @@ using namespace std;
 template <class T>
 void Display(LinkList<T> & list)
 {
-    cout << "Elements: " << list.Length() << endl;
-    LinkListNode<T> * node = list.Head->GetNext();
-    while(node)
+    cout << list.Length() << " element(s): ";
+    for(int i=1; i<=list.Length(); i++)
     {
-        cout << node->GetData() << " ";
-        node = node->GetNext();
+        cout << list.Get(i) << " ";
     }
     cout << endl;
 }
@@ -21,8 +19,6 @@ int main()
     LinkList<int> ll;
     cout << "Created a link list..." << endl;
     cout << "length = " << ll.Length() << endl;
-    cout << "Head->data: " << ll.Head->GetData() << endl;
-    cout << "Head->next: " << ll.Head->GetNext() << endl;
 
     for(int i = 1; i <= 10; i++)
     {
