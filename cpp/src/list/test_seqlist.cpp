@@ -23,13 +23,21 @@ int main()
         cout << "Created a sequencial list..." << endl;
         cout << "length = " << isl.Count() << endl;
         
-        for(int i=1; i<=10; i++)
+        for(int i=1; i<=11; i++)
         {
             int val = i * 2;
             isl.Insert(val, isl.Count() + 1);
             cout << val << " inserted. length = " << isl.Count() << endl;
         }    
-        Display<int>(isl);
+        Display(isl);
+
+        cout << "Reversing ..." << endl;
+        isl.Reverse();
+        Display(isl);
+
+        cout << "Reversing again ..." << endl;
+        isl.Reverse();
+        Display(isl);
         
         int idx = 1;
         int val = isl.Get(idx);
@@ -63,24 +71,24 @@ int main()
 
         cout << "Inserting 3 at 3 ..." << endl;
         isl.Insert(3, 3);
-        Display<int>(isl);
+        Display(isl);
         cout << "Deleting 3 ..." << endl;
         isl.Delete(3);
-        Display<int>(isl);
+        Display(isl);
 
         cout << "Inserting 0 at 1 ..." << endl;
         isl.Insert(0, 1);
-        Display<int>(isl);
+        Display(isl);
         cout << "Deleting 0 ..." << endl;
         isl.Delete(1);
-        Display<int>(isl);
+        Display(isl);
 
         cout << "Inserting 11 at 11 ..." << endl;
         isl.Insert(11, 11);
-        Display<int>(isl);
+        Display(isl);
         cout << "Deleting 11 ..." << endl;
         isl.Delete(11);
-        Display<int>(isl);
+        Display(isl);
     }
     catch(const char* ex)
     {

@@ -28,6 +28,14 @@ int main()
     }
     Display(ll);
 
+    cout << "Reversing ..." << endl;
+    ll.Reverse();
+    Display(ll);
+
+    cout << "Reversing again ..." << endl;
+    ll.Reverse();
+    Display(ll);
+
     int idx = 1;
     int val = ll.Get(idx);
     cout << "Get(" << idx << ") = " << val << "." << endl;
