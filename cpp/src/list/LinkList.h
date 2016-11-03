@@ -27,11 +27,12 @@ class LinkList : public LinearList <T>
         LinkList() {head = new LinkListNode<T>;}
         virtual ~LinkList() {Dispose();}
         
-        // from ILinearList
+        // 
         virtual T Get(int index);
         virtual int Locate(T value);
         virtual void Insert(T value, int index);
         virtual T Delete(int index);
+        virtual void Reverse();
     protected:
         virtual void Dispose();
     
@@ -129,6 +130,29 @@ void LinkList<T>::Dispose()
         delete t;
         t = head->next;
     }
+}
+
+template <class T>
+void LinkList<T>::Reverse()
+{
+    if (head->next == nullptr) return; // if this is an empty link list, do nothing.
+    if (head->next->next == nullptr) return; // if only 1 node, do nothing.
+    
+    LinkListNode<T> * newRearNode = head->next;
+    LinkListNode<T> * oldFirstNode = head->next->next;
+    LinkListNode<T> * t;
+
+    newRearNode->next = nullptr;
+
+    while(oldFirstNode)
+    {
+        t = oldFirstNode;
+        oldFirstNode = oldFirstNode->next;
+        t->next = head->next;
+        head->next = t;
+    }
+
+    t = nullptr;
 }
 
 #endif

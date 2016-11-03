@@ -11,6 +11,7 @@ class SeqList : public LinearList <T>
         virtual int Locate(T value);
         virtual void Insert(T value, int index);
         virtual T Delete(int index);
+        virtual void Reverse();
     protected:
         T elements[Capacity];
 };
@@ -65,6 +66,18 @@ T SeqList<T>::Delete(int index)
     this->Length() --;
     
     return temp;
+}
+
+template <class T>
+void SeqList<T>::Reverse()
+{
+    int m = this->Length() / 2;
+    for(int i = 0; i < m; i ++)
+    {
+        T temp = elements[i];
+        elements[i] = elements[this->Length() - 1 - i];
+        elements[this->Length() - 1 - i] = temp;
+    }
 }
 
 #endif

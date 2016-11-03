@@ -11,6 +11,7 @@ class LinearList
         virtual int Locate(T value) = 0;
         virtual void Insert(T value, int index) = 0;
         virtual T Delete(int index) = 0;
+        virtual void Reverse() = 0;
     public:
         virtual int Count() {return Length();} // return the count of the elements for external access 
         virtual bool IsEmpty() {return Length() == 0;}
