@@ -8,8 +8,8 @@ using namespace std;
 template <class T>
 void Display(SeqList<T> & list)
 {    
-    cout << list.Length() << " element(s): ";
-    for(int i=1; i<=list.Length(); i++)
+    cout << list.Count() << " element(s): ";
+    for(int i=1; i<=list.Count(); i++)
     {
         cout << list.Get(i) << " ";
     }
@@ -21,13 +21,13 @@ int main()
     try{
         SeqList<int> isl;
         cout << "Created a sequencial list..." << endl;
-        cout << "length = " << isl.Length() << endl;
+        cout << "length = " << isl.Count() << endl;
         
         for(int i=1; i<=10; i++)
         {
             int val = i * 2;
-            isl.Insert(val, isl.Length() + 1);
-            cout << val << " inserted. length = " << isl.Length() << endl;
+            isl.Insert(val, isl.Count() + 1);
+            cout << val << " inserted. length = " << isl.Count() << endl;
         }    
         Display<int>(isl);
         
@@ -48,7 +48,7 @@ int main()
             cout << val << " is at " << idx << "." << endl;
         }
 
-        idx = isl.Length();
+        idx = isl.Count();
         val = isl.Get(idx);
         if (idx == isl.Locate(val))
         {

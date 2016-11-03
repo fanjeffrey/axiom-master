@@ -20,7 +20,7 @@ class LinkListNode
 };
 
 template <class T>
-class LinkList : public LinearList, public ILinearList <T>
+class LinkList : public LinearList <T>
 {
     // methods:
     public:
@@ -43,7 +43,7 @@ class LinkList : public LinearList, public ILinearList <T>
 template <class T>
 T LinkList<T>::Get(int index)
 {    
-    ValidateBeforeGetting(index);
+    this->ValidateBeforeGetting(index);
 
     LinkListNode<T> * p = head->next;
     while(p && --index)
@@ -74,7 +74,7 @@ int LinkList<T>::Locate(T value)
 template <class T>
 void LinkList<T>::Insert(T value, int index)
 {
-    ValidateBeforeInsertion(index);
+    this->ValidateBeforeInsertion(index);
     
     LinkListNode<T> * p = head;
     while (p && --index)
@@ -87,13 +87,13 @@ void LinkList<T>::Insert(T value, int index)
     n->next = p->next;
     p->next = n;
 
-    length ++;
+    this->Length() ++;
 }
 
 template <class T>
 T LinkList<T>::Delete(int index)
 {
-    ValidateBeforeDeleteion(index);
+    this->ValidateBeforeDeleteion(index);
     
     LinkListNode<T> * p = head;
     while (p && --index)
@@ -109,7 +109,7 @@ T LinkList<T>::Delete(int index)
         T retVal = t->data;
         delete t;
 
-        length --;
+        this->Length() --;
         
         return retVal;
     }
