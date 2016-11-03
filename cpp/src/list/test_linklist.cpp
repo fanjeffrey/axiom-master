@@ -6,8 +6,8 @@ using namespace std;
 template <class T>
 void Display(LinkList<T> & list)
 {
-    cout << list.Length() << " element(s): ";
-    for(int i=1; i<=list.Length(); i++)
+    cout << list.Count() << " element(s): ";
+    for(int i=1; i<=list.Count(); i++)
     {
         cout << list.Get(i) << " ";
     }
@@ -18,13 +18,13 @@ int main()
 {
     LinkList<int> ll;
     cout << "Created a link list..." << endl;
-    cout << "length = " << ll.Length() << endl;
+    cout << "length = " << ll.Count() << endl;
 
     for(int i = 1; i <= 10; i++)
     {
         int val = i * 2;
-        ll.Insert(val, ll.Length() + 1);
-        cout << val << " inserted. length = " << ll.Length() << endl;
+        ll.Insert(val, ll.Count() + 1);
+        cout << val << " inserted. length = " << ll.Count() << endl;
     }
     Display(ll);
 
@@ -45,7 +45,7 @@ int main()
         cout << val << " is at " << idx << "." << endl;
     }
 
-    idx = ll.Length();
+    idx = ll.Count();
     val = ll.Get(idx);
     if (idx == ll.Locate(val))
     {

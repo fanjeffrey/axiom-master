@@ -4,10 +4,9 @@
 #include "LinearList.h"
 
 template <class T>
-class SeqList : public LinearList, public ILinearList <T>
+class SeqList : public LinearList <T>
 {
     public:
-        // from ILinearList
         virtual T Get(int index);
         virtual int Locate(T value);
         virtual void Insert(T value, int index);
@@ -20,7 +19,7 @@ class SeqList : public LinearList, public ILinearList <T>
 template <class T>
 T SeqList<T>::Get(int index)
 {
-    ValidateBeforeGetting(index);
+    this->ValidateBeforeGetting(index);
     
     return elements[index - 1];
 }
@@ -28,7 +27,7 @@ T SeqList<T>::Get(int index)
 template <class T>
 int SeqList<T>::Locate(T value)
 {
-    for(int i=1; i<=length; i++)
+    for(int i = 1; i <= this->Length(); i++)
     {
         if (elements[i-1] == value) return i;
     }
@@ -39,30 +38,31 @@ int SeqList<T>::Locate(T value)
 template <class T>
 void SeqList<T>::Insert(T value, int index)
 {
-    ValidateBeforeInsertion(index);
+    this->ValidateBeforeInsertion(index);
     
-    for (int i = length - 1; i >= index - 1; i--)
+    for (int i = this->Length() - 1; i >= index - 1; i--)
     {
         elements[i + 1] = elements[i];
     }
     
     elements[index - 1] = value;
-    length ++;
+
+    this->Length() ++;
 }
 
 template <class T>
 T SeqList<T>::Delete(int index)
 {
-    ValidateBeforeDeleteion(index);
+    this->ValidateBeforeDeleteion(index);
     
     T temp = elements[index - 1];
     
-    for (int i = index - 1; i < length - 1; i++)
+    for (int i = index - 1; i < this->Length() - 1; i++)
     {
         elements[i] = elements[i+1];
     }
     
-    length --;
+    this->Length() --;
     
     return temp;
 }
