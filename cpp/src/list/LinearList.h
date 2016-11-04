@@ -6,6 +6,7 @@
 class LinearListBase
 {
   public:
+    LinearListBase() : length(0) {}
     virtual int Count() { return Length(); } // return the count of the elements for external access
     virtual bool IsEmpty() { return Length() == 0; }
     virtual bool IsFull() { return Length() == Capacity; }

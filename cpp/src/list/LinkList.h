@@ -27,6 +27,7 @@ class LinkList : public LinearList<T>
     // methods:
   public:
     LinkList() { head = new LinkListNode<T>; }
+    LinkList(const LinkList<T> &rll);
     virtual ~LinkList() { Dispose(); }
 
     //
@@ -35,6 +36,7 @@ class LinkList : public LinearList<T>
     virtual void Insert(T value, int index);
     virtual T Delete(int index);
     virtual void Reverse();
+    virtual LinkList<T> Split();
 
   protected:
     virtual void Dispose();
@@ -43,6 +45,28 @@ class LinkList : public LinearList<T>
   protected:
     LinkListNode<T> *head;
 };
+
+template <class T>
+LinkList<T>::LinkList(const LinkList<T> &rll)
+{
+    head = new LinkListNode<T>;
+
+    LinkListNode<T> *r = head;
+    LinkListNode<T> *t = rll.head->next;
+    LinkListNode<T> *n;
+    while (t)
+    {
+        n = new LinkListNode<T>;
+        n->data = t->data;
+
+        r->next = n;
+        r = n;
+
+        t = t->next;
+    }
+
+    r = t = n = nullptr;
+}
 
 template <class T>
 T LinkList<T>::Get(int index)
@@ -133,6 +157,8 @@ void LinkList<T>::Dispose()
         delete t;
         t = head->next;
     }
+
+    delete head;
 }
 
 template <class T>
@@ -158,6 +184,37 @@ void LinkList<T>::Reverse()
     }
 
     t = nullptr;
+}
+
+template <class T>
+LinkList<T> LinkList<T>::Split()
+{
+    LinkList<T> to;
+    LinkListNode<T> *a = head->next;
+    LinkListNode<T> *b = to.head;
+    LinkListNode<T> *t;
+
+    while (a)
+    {
+        t = a;
+        a = a->next;
+        if (a)
+        {
+            t->next = a->next;
+
+            b->next = a;
+            b = a;
+
+            to.Length()++;
+            this->Length()--;
+
+            a = a->next;
+        }
+    }
+
+    a = b = t = nullptr;
+
+    return to;
 }
 
 #endif
