@@ -3,16 +3,8 @@
 
 #define Capacity 1000
 
-template <class T>
-class LinearList
+class LinearListBase
 {
-  public:
-    virtual T Get(int index) = 0;
-    virtual int Locate(T value) = 0;
-    virtual void Insert(T value, int index) = 0;
-    virtual T Delete(int index) = 0;
-    virtual void Reverse() = 0;
-
   public:
     virtual int Count() { return Length(); } // return the count of the elements for external access
     virtual bool IsEmpty() { return Length() == 0; }
@@ -30,8 +22,7 @@ class LinearList
     int length;
 };
 
-template <class T>
-inline void LinearList<T>::ValidateBeforeGetting(int index)
+inline void LinearListBase::ValidateBeforeGetting(int index)
 {
     if (IsEmpty())
     {
@@ -44,8 +35,7 @@ inline void LinearList<T>::ValidateBeforeGetting(int index)
     }
 }
 
-template <class T>
-inline void LinearList<T>::ValidateBeforeInsertion(int index)
+inline void LinearListBase::ValidateBeforeInsertion(int index)
 {
     if (IsFull())
     {
@@ -58,8 +48,7 @@ inline void LinearList<T>::ValidateBeforeInsertion(int index)
     }
 }
 
-template <class T>
-inline void LinearList<T>::ValidateBeforeDeleteion(int index)
+inline void LinearListBase::ValidateBeforeDeleteion(int index)
 {
     if (IsEmpty())
     {
@@ -71,5 +60,16 @@ inline void LinearList<T>::ValidateBeforeDeleteion(int index)
         throw "Wrong position for deletion.";
     }
 }
+
+template <class T>
+class LinearList : public LinearListBase
+{
+  public:
+    virtual T Get(int index) = 0;
+    virtual int Locate(T value) = 0;
+    virtual void Insert(T value, int index) = 0;
+    virtual T Delete(int index) = 0;
+    virtual void Reverse() = 0;
+};
 
 #endif
