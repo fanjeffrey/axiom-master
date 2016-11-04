@@ -4,10 +4,10 @@
 using namespace std;
 
 template <class T>
-void Display(LinkList<T> & list)
+void Display(LinkList<T> &list)
 {
     cout << list.Count() << " element(s): ";
-    for(int i=1; i<=list.Count(); i++)
+    for (int i = 1; i <= list.Count(); i++)
     {
         cout << list.Get(i) << " ";
     }
@@ -20,7 +20,7 @@ int main()
     cout << "Created a link list..." << endl;
     cout << "length = " << ll.Count() << endl;
 
-    for(int i = 1; i <= 10; i++)
+    for (int i = 1; i <= 10; i++)
     {
         int val = i * 2;
         ll.Insert(val, ll.Count() + 1);

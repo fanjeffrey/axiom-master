@@ -5,9 +5,9 @@
 using namespace std;
 
 template <class T>
-void Union(LinearList<T> & la, LinearList<T> & lb)
+void Union(LinearList<T> &la, LinearList<T> &lb)
 {
-    for(int i = 1; i <= lb.Count(); i++)
+    for (int i = 1; i <= lb.Count(); i++)
     {
         T data = lb.Get(i);
         if (la.Locate(data) == -1)
@@ -18,11 +18,11 @@ void Union(LinearList<T> & la, LinearList<T> & lb)
 }
 
 template <class T>
-void Purge(LinearList<T> & la)
+void Purge(LinearList<T> &la)
 {
     int i = 1;
 
-    while(i <= la.Count())
+    while (i <= la.Count())
     {
         T data = la.Get(i);
 
@@ -34,18 +34,18 @@ void Purge(LinearList<T> & la)
                 la.Delete(j);
             }
 
-            j ++;
+            j++;
         }
 
-        i ++;
+        i++;
     }
 }
 
 template <class T>
-void Display(LinearList<T> & list)
-{    
+void Display(LinearList<T> &list)
+{
     cout << list.Count() << " element(s): ";
-    for(int i=1; i<=list.Count(); i++)
+    for (int i = 1; i <= list.Count(); i++)
     {
         cout << list.Get(i) << " ";
     }
@@ -55,7 +55,7 @@ void Display(LinearList<T> & list)
 int main()
 {
     LinkList<int> lla;
-    for(int i=1; i<=10; i++)
+    for (int i = 1; i <= 10; i++)
     {
         int val = i * 2;
         lla.Insert(val, lla.Count() + 1);
@@ -72,12 +72,12 @@ int main()
     Display(lla);
 
     SeqList<int> llb;
-    for(int i=1; i<=10; i++)
+    for (int i = 1; i <= 10; i++)
     {
         int val = i * 3;
         llb.Insert(val, llb.Count() + 1);
         cout << val << " inserted. length = " << llb.Count() << endl;
-    }    
+    }
     Display(llb);
 
     cout << "Union list A and list B ..." << endl;
@@ -86,7 +86,7 @@ int main()
 
     //
     SeqList<int> sla;
-    for(int i=1; i<=10; i++)
+    for (int i = 1; i <= 10; i++)
     {
         int val = i * 2;
         sla.Insert(val, sla.Count() + 1);
@@ -103,12 +103,12 @@ int main()
     Display(sla);
 
     SeqList<int> slb;
-    for(int i=1; i<=10; i++)
+    for (int i = 1; i <= 10; i++)
     {
         int val = i * 3;
         slb.Insert(val, slb.Count() + 1);
         cout << val << " inserted. length = " << slb.Count() << endl;
-    }    
+    }
     Display(slb);
 
     cout << "Union list A and list B ..." << endl;

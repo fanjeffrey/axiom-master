@@ -4,50 +4,53 @@
 #include "LinearList.h"
 
 // forward declaration
-template <class T> class LinkList;
+template <class T>
+class LinkList;
 
 template <class T>
 class LinkListNode
 {
     friend class LinkList<T>;
-    public:
-        LinkListNode():next(nullptr){}
-        virtual T GetData(){return data;}
-        virtual LinkListNode<T> * GetNext() {return next;}
-    private:
-        T data;
-        LinkListNode<T> * next;
+
+  public:
+    LinkListNode() : next(nullptr) {}
+    virtual T GetData() { return data; }
+    virtual LinkListNode<T> *GetNext() { return next; }
+  private:
+    T data;
+    LinkListNode<T> *next;
 };
 
 template <class T>
-class LinkList : public LinearList <T>
+class LinkList : public LinearList<T>
 {
     // methods:
-    public:
-        LinkList() {head = new LinkListNode<T>;}
-        virtual ~LinkList() {Dispose();}
-        
-        // 
-        virtual T Get(int index);
-        virtual int Locate(T value);
-        virtual void Insert(T value, int index);
-        virtual T Delete(int index);
-        virtual void Reverse();
-    protected:
-        virtual void Dispose();
-    
+  public:
+    LinkList() { head = new LinkListNode<T>; }
+    virtual ~LinkList() { Dispose(); }
+
+    //
+    virtual T Get(int index);
+    virtual int Locate(T value);
+    virtual void Insert(T value, int index);
+    virtual T Delete(int index);
+    virtual void Reverse();
+
+  protected:
+    virtual void Dispose();
+
     // fields:
-    protected:
-        LinkListNode<T> * head;
+  protected:
+    LinkListNode<T> *head;
 };
 
 template <class T>
 T LinkList<T>::Get(int index)
-{    
+{
     this->ValidateBeforeGetting(index);
 
-    LinkListNode<T> * p = head->next;
-    while(p && --index)
+    LinkListNode<T> *p = head->next;
+    while (p && --index)
     {
         p = p->next;
     }
@@ -59,14 +62,14 @@ template <class T>
 int LinkList<T>::Locate(T value)
 {
     int index = 1;
-    LinkListNode<T> * p = head->next;
-    while(p && p->data != value)
+    LinkListNode<T> *p = head->next;
+    while (p && p->data != value)
     {
-        index ++;
+        index++;
         p = p->next;
     }
-    
-    if (p)    
+
+    if (p)
         return index;
     else
         return -1;
@@ -76,42 +79,42 @@ template <class T>
 void LinkList<T>::Insert(T value, int index)
 {
     this->ValidateBeforeInsertion(index);
-    
-    LinkListNode<T> * p = head;
+
+    LinkListNode<T> *p = head;
     while (p && --index)
     {
         p = p->next;
     }
-    
-    LinkListNode<T> * n = new LinkListNode<T>;
+
+    LinkListNode<T> *n = new LinkListNode<T>;
     n->data = value;
     n->next = p->next;
     p->next = n;
 
-    this->Length() ++;
+    this->Length()++;
 }
 
 template <class T>
 T LinkList<T>::Delete(int index)
 {
     this->ValidateBeforeDeleteion(index);
-    
-    LinkListNode<T> * p = head;
+
+    LinkListNode<T> *p = head;
     while (p && --index)
     {
         p = p->next;
     }
-    
+
     if (p)
     {
-        LinkListNode<T> * t = p->next;
+        LinkListNode<T> *t = p->next;
         p->next = t->next;
-        
+
         T retVal = t->data;
         delete t;
 
-        this->Length() --;
-        
+        this->Length()--;
+
         return retVal;
     }
     else
@@ -123,8 +126,8 @@ T LinkList<T>::Delete(int index)
 template <class T>
 void LinkList<T>::Dispose()
 {
-    LinkListNode<T> * t = head->next;
-    while(t)
+    LinkListNode<T> *t = head->next;
+    while (t)
     {
         head->next = t->next;
         delete t;
@@ -135,16 +138,18 @@ void LinkList<T>::Dispose()
 template <class T>
 void LinkList<T>::Reverse()
 {
-    if (head->next == nullptr) return; // if this is an empty link list, do nothing.
-    if (head->next->next == nullptr) return; // if only 1 node, do nothing.
-    
-    LinkListNode<T> * newRearNode = head->next;
-    LinkListNode<T> * oldFirstNode = head->next->next;
-    LinkListNode<T> * t;
+    if (head->next == nullptr)
+        return; // if this is an empty link list, do nothing.
+    if (head->next->next == nullptr)
+        return; // if only 1 node, do nothing.
+
+    LinkListNode<T> *newRearNode = head->next;
+    LinkListNode<T> *oldFirstNode = head->next->next;
+    LinkListNode<T> *t;
 
     newRearNode->next = nullptr;
 
-    while(oldFirstNode)
+    while (oldFirstNode)
     {
         t = oldFirstNode;
         oldFirstNode = oldFirstNode->next;
