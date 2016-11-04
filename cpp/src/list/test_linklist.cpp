@@ -68,24 +68,37 @@ int main()
 
     cout << "Inserting 3 at 3 ..." << endl;
     ll.Insert(3, 3);
-    Display<int>(ll);
+    Display(ll);
     cout << "Deleting 3 ..." << endl;
     ll.Delete(3);
-    Display<int>(ll);
+    Display(ll);
 
     cout << "Inserting 0 at 1 ..." << endl;
     ll.Insert(0, 1);
-    Display<int>(ll);
+    Display(ll);
     cout << "Deleting 0 ..." << endl;
     ll.Delete(1);
-    Display<int>(ll);
+    Display(ll);
 
     cout << "Inserting 11 at 12 ..." << endl;
     ll.Insert(11, 11);
-    Display<int>(ll);
+    Display(ll);
     cout << "Deleting 11 ..." << endl;
     ll.Delete(11);
-    Display<int>(ll);
+    Display(ll);
 
+    {
+        cout << "assign ll to lla ..." << endl;
+        LinkList<int> lla = ll;
+        cout << "call llb(ll) ..." << endl;
+        LinkList<int> llb(ll);
+
+        cout << "Splitting ..." << endl;
+        LinkList<int> llc = ll.Split();
+        Display(ll);
+        Display(llc);
+    }
+
+    cout << "End." << endl;
     return 0;
 }
