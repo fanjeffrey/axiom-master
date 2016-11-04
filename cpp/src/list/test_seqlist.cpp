@@ -6,10 +6,10 @@
 using namespace std;
 
 template <class T>
-void Display(SeqList<T> & list)
-{    
+void Display(SeqList<T> &list)
+{
     cout << list.Count() << " element(s): ";
-    for(int i=1; i<=list.Count(); i++)
+    for (int i = 1; i <= list.Count(); i++)
     {
         cout << list.Get(i) << " ";
     }
@@ -18,17 +18,18 @@ void Display(SeqList<T> & list)
 
 int main()
 {
-    try{
+    try
+    {
         SeqList<int> isl;
         cout << "Created a sequencial list..." << endl;
         cout << "length = " << isl.Count() << endl;
-        
-        for(int i=1; i<=11; i++)
+
+        for (int i = 1; i <= 11; i++)
         {
             int val = i * 2;
             isl.Insert(val, isl.Count() + 1);
             cout << val << " inserted. length = " << isl.Count() << endl;
-        }    
+        }
         Display(isl);
 
         cout << "Reversing ..." << endl;
@@ -38,7 +39,7 @@ int main()
         cout << "Reversing again ..." << endl;
         isl.Reverse();
         Display(isl);
-        
+
         int idx = 1;
         int val = isl.Get(idx);
         cout << "Get(" << idx << ") = " << val << "." << endl;
@@ -90,10 +91,10 @@ int main()
         isl.Delete(11);
         Display(isl);
     }
-    catch(const char* ex)
+    catch (const char *ex)
     {
         cout << ex << endl;
     }
-    
+
     return 0;
 }
