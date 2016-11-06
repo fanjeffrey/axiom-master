@@ -28,6 +28,7 @@ class LinkList : public LinearList<T>
   public:
     LinkList() { head = new LinkListNode<T>; }
     LinkList(const LinkList<T> &rll);
+    LinkList<T> &operator=(LinkList<T> &);
     virtual ~LinkList() { Dispose(); }
 
     //
@@ -39,6 +40,7 @@ class LinkList : public LinearList<T>
     virtual LinkList<T> Split();
 
   protected:
+    virtual void CopyFrom(const LinkList<T> &);
     virtual void Dispose();
 
     // fields:
@@ -48,6 +50,22 @@ class LinkList : public LinearList<T>
 
 template <class T>
 LinkList<T>::LinkList(const LinkList<T> &rll)
+{
+    CopyFrom(rll);
+}
+
+template <class T>
+LinkList<T> &LinkList<T>::operator=(LinkList<T> &rll)
+{
+    if (this == &rll)
+        return *this;
+
+    Dispose();
+    CopyFrom(rll);
+}
+
+template <class T>
+void LinkList<T>::CopyFrom(const LinkList<T> &rll)
 {
     head = new LinkListNode<T>;
 

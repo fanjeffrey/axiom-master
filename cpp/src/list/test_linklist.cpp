@@ -88,10 +88,13 @@ int main()
     Display(ll);
 
     {
-        cout << "assign ll to lla ..." << endl;
+        cout << "call LinkList<int> lla = ll ..." << endl;
         LinkList<int> lla = ll;
-        cout << "call llb(ll) ..." << endl;
+        cout << "call LinkList<int> llb(ll) ..." << endl;
         LinkList<int> llb(ll);
+        cout << "call llb = lla ..." << endl;
+        llb = lla;
+
 
         cout << "Splitting ..." << endl;
         LinkList<int> llc = ll.Split();
