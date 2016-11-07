@@ -210,29 +210,29 @@ template <class T>
 LinkList<T> LinkList<T>::Split()
 {
     LinkList<T> to;
-    LinkListNode<T> *a = head->next;
+    LinkListNode<T> *a = head;
     LinkListNode<T> *b = to.head;
-    LinkListNode<T> *t;
+    LinkListNode<T> *cur = head->next; // point to the 1st node
 
-    while (a)
+    while (cur)
     {
-        t = a;
-        a = a->next;
-        if (a)
-        {
-            t->next = a->next;
+        a->next = cur;
+        a = cur;
 
-            b->next = a;
-            b = a;
+        cur = cur->next; // move to the 2nd node
+        if (cur)
+        {
+            b->next = cur;
+            b = cur;
+
+            cur = cur->next;
 
             to.length++;
             this->length--;
-
-            a = a->next;
         }
     }
 
-    a = b = t = nullptr;
+    a->next = b->next = nullptr;
 
     return to;
 }
