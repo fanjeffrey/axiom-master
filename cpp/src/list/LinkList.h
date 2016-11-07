@@ -27,8 +27,8 @@ class LinkList : public LinearList<T>
     // methods:
   public:
     LinkList() { head = new LinkListNode<T>; }
-    LinkList(const LinkList<T> &rll);
-    LinkList<T> &operator=(LinkList<T> &);
+    LinkList(const LinkList<T> &);
+    LinkList<T> &operator=(const LinkList<T> &);
     virtual ~LinkList() { Dispose(); }
 
     //
@@ -40,7 +40,7 @@ class LinkList : public LinearList<T>
     virtual LinkList<T> Split();
 
   protected:
-    virtual void CopyFrom(const LinkList<T> &);
+    virtual void CreateFrom(const LinkList<T> &);
     virtual void Dispose();
 
     // fields:
@@ -49,28 +49,28 @@ class LinkList : public LinearList<T>
 };
 
 template <class T>
-LinkList<T>::LinkList(const LinkList<T> &rll)
+LinkList<T>::LinkList(const LinkList<T> &other)
 {
-    CopyFrom(rll);
+    CreateFrom(other);
 }
 
 template <class T>
-LinkList<T> &LinkList<T>::operator=(LinkList<T> &rll)
+LinkList<T> &LinkList<T>::operator=(const LinkList<T> &other)
 {
-    if (this == &rll)
+    if (this == &other)
         return *this;
 
     Dispose();
-    CopyFrom(rll);
+    CreateFrom(other);
 }
 
 template <class T>
-void LinkList<T>::CopyFrom(const LinkList<T> &rll)
+void LinkList<T>::CreateFrom(const LinkList<T> &other)
 {
     head = new LinkListNode<T>;
 
     LinkListNode<T> *r = head;
-    LinkListNode<T> *t = rll.head->next;
+    LinkListNode<T> *t = other.head->next;
     LinkListNode<T> *n;
     while (t)
     {
@@ -84,6 +84,8 @@ void LinkList<T>::CopyFrom(const LinkList<T> &rll)
     }
 
     r = t = n = nullptr;
+
+    this->length = other.Count();
 }
 
 template <class T>
@@ -133,7 +135,7 @@ void LinkList<T>::Insert(T value, int index)
     n->next = p->next;
     p->next = n;
 
-    this->Length()++;
+    this->length++;
 }
 
 template <class T>
@@ -155,7 +157,7 @@ T LinkList<T>::Delete(int index)
         T retVal = t->data;
         delete t;
 
-        this->Length()--;
+        this->length--;
 
         return retVal;
     }
@@ -223,8 +225,8 @@ LinkList<T> LinkList<T>::Split()
             b->next = a;
             b = a;
 
-            to.Length()++;
-            this->Length()--;
+            to.length++;
+            this->length--;
 
             a = a->next;
         }

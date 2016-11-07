@@ -86,20 +86,31 @@ int main()
     cout << "Deleting 11 ..." << endl;
     ll.Delete(11);
     Display(ll);
-
+    try
     {
         cout << "call LinkList<int> lla = ll ..." << endl;
         LinkList<int> lla = ll;
+        cout << "lla.length = " << lla.Count() << endl;
+
         cout << "call LinkList<int> llb(ll) ..." << endl;
         LinkList<int> llb(ll);
+        cout << "llb.length = " << llb.Count() << endl;
+        llb.Insert(77, 7);
+        cout << "llb.length = " << llb.Count() << endl;
+
         cout << "call llb = lla ..." << endl;
         llb = lla;
-
+        cout << "llb.length = " << llb.Count() << endl;
+        cout << "lla.length = " << lla.Count() << endl;
 
         cout << "Splitting ..." << endl;
         LinkList<int> llc = ll.Split();
         Display(ll);
         Display(llc);
+    }
+    catch (const char *&ex)
+    {
+        cout << "Error: " << ex << endl;
     }
 
     cout << "End." << endl;
