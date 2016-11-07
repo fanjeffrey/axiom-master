@@ -29,7 +29,7 @@ T SeqList<T>::Get(int index)
 template <class T>
 int SeqList<T>::Locate(T value)
 {
-    for (int i = 1; i <= this->Length(); i++)
+    for (int i = 1; i <= this->length; i++)
     {
         if (elements[i - 1] == value)
             return i;
@@ -43,14 +43,14 @@ void SeqList<T>::Insert(T value, int index)
 {
     this->ValidateBeforeInsertion(index);
 
-    for (int i = this->Length() - 1; i >= index - 1; i--)
+    for (int i = this->length - 1; i >= index - 1; i--)
     {
         elements[i + 1] = elements[i];
     }
 
     elements[index - 1] = value;
 
-    this->Length()++;
+    this->length++;
 }
 
 template <class T>
@@ -60,12 +60,12 @@ T SeqList<T>::Delete(int index)
 
     T temp = elements[index - 1];
 
-    for (int i = index - 1; i < this->Length() - 1; i++)
+    for (int i = index - 1; i < this->length - 1; i++)
     {
         elements[i] = elements[i + 1];
     }
 
-    this->Length()--;
+    this->length--;
 
     return temp;
 }
@@ -73,12 +73,12 @@ T SeqList<T>::Delete(int index)
 template <class T>
 void SeqList<T>::Reverse()
 {
-    int m = this->Length() / 2;
+    int m = this->length / 2;
     for (int i = 0; i < m; i++)
     {
         T temp = elements[i];
-        elements[i] = elements[this->Length() - 1 - i];
-        elements[this->Length() - 1 - i] = temp;
+        elements[i] = elements[this->length - 1 - i];
+        elements[this->length - 1 - i] = temp;
     }
 }
 

@@ -7,19 +7,18 @@ class LinearListBase
 {
   public:
     LinearListBase() : length(0) {}
-    virtual int Count() { return Length(); } // return the count of the elements for external access
-    virtual bool IsEmpty() { return Length() == 0; }
-    virtual bool IsFull() { return Length() == Capacity; }
+    virtual int Count() const { return length; } // return the count of the elements for external access
+    virtual bool IsEmpty() { return length == 0; }
+    virtual bool IsFull() { return length == Capacity; }
   protected:
-    virtual int &Length() { return length; } // only for internal access
-    virtual bool IsValidGettingIndex(int index) { return index < 1 || index > Length(); }
-    virtual bool IsValidInsertionIndex(int index) { return index < 1 || index > Length() + 1; }
-    virtual bool IsValidDeletionIndex(int index) { return index < 1 || index > Length(); }
+    virtual bool IsValidGettingIndex(int index) { return index < 1 || index > length; }
+    virtual bool IsValidInsertionIndex(int index) { return index < 1 || index > length + 1; }
+    virtual bool IsValidDeletionIndex(int index) { return index < 1 || index > length; }
     virtual void ValidateBeforeGetting(int index);
     virtual void ValidateBeforeInsertion(int index);
     virtual void ValidateBeforeDeleteion(int index);
 
-  private:
+  protected:
     int length;
 };
 
