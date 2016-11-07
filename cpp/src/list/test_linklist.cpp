@@ -103,7 +103,14 @@ int main()
         cout << "llb.length = " << llb.Count() << endl;
         cout << "lla.length = " << lla.Count() << endl;
 
-        cout << "Splitting ..." << endl;
+        cout << "Splitting llb ..." << endl;
+        llb.Insert(88, 8);
+        cout << "llb.length = " << llb.Count() << endl;
+        LinkList<int> llb2 = llb.Split();
+        Display(llb);
+        Display(llb2);
+
+        cout << "Splitting llc ..." << endl;
         LinkList<int> llc = ll.Split();
         Display(ll);
         Display(llc);
