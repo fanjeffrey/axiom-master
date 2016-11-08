@@ -83,22 +83,31 @@ void SeqList<T>::Reverse()
     }
 }
 
+// This method assumes that both lists are already sorted in ascending order.
 template <class T>
 void SeqList<T>::Subtract(const SeqList<T> &listB)
 {
-    for (int i = 0; i < this->length; i++)
-    {
-        for (int j = 0; j < listB.length; j++)
-        {
-            if (elements[i] == listB.elements[j])
-            {
-                for (int k = i; k < this->length; k++)
-                {
-                    elements[k] = elements[k + 1];
-                }
+    int i = 0;
+    int j = 0;
 
-                this->length--;
+    while (i < this->length && j < listB.length)
+    {
+        if (elements[i] < listB.elements[j])
+        {
+            i++;
+        }
+        else if (listB.elements[j] < elements[i])
+        {
+            j++;
+        }
+        else
+        {
+            for (int k = i; k < this->length; k++)
+            {
+                elements[k] = elements[k + 1];
             }
+
+            this->length--;
         }
     }
 }
