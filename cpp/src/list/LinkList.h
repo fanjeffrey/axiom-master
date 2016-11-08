@@ -38,6 +38,7 @@ class LinkList : public LinearList<T>
     virtual T Delete(int index);
     virtual void Reverse();
     virtual LinkList<T> Split();
+    virtual void InsertSort();
 
   protected:
     virtual void CreateFrom(const LinkList<T> &);
@@ -235,6 +236,39 @@ LinkList<T> LinkList<T>::Split()
     a->next = b->next = nullptr;
 
     return to;
+}
+
+template <class T>
+void LinkList<T>::InsertSort()
+{
+    if (head->next == nullptr) return; // if this is an empty link list
+    if (head->next->next == nullptr) return; // if only 1 node in this list
+
+    LinkListNode<T> *a, * b, * c, * d;
+    c = head->next;
+    d = head->next->next;
+    while(d)
+    {
+        if (d->data < c->data)
+        {
+            a = head;
+            b = head->next;
+            while(b && b != d && b->data < d->data)            
+            {
+                a = b;
+                b = b->next;
+            }
+
+            if (b)
+            {
+                c->next = d->next;
+                a->next = d;
+                d->next = b;
+            }
+        }
+        c = d;
+        d = d->next;
+    }
 }
 
 #endif

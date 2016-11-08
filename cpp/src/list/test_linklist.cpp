@@ -114,6 +114,16 @@ int main()
         LinkList<int> llc = ll.Split();
         Display(ll);
         Display(llc);
+
+        cout << "Sorting llc ..." << endl;
+        llc.Insert(33, 6);
+        llc.Insert(11, 1);
+        llc.Insert(20, 2);
+        llc.Insert(17, 3);
+        llc.Insert(1, 6);
+        Display(llc);
+        llc.InsertSort();
+        Display(llc);
     }
     catch (const char *&ex)
     {
