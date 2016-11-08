@@ -110,7 +110,7 @@ int main()
         Display(llb);
         Display(llb2);
 
-        cout << "Splitting llc ..." << endl;
+        cout << "Splitting ll ..." << endl;
         LinkList<int> llc = ll.Split();
         Display(ll);
         Display(llc);
@@ -123,6 +123,11 @@ int main()
         llc.Insert(1, 6);
         Display(llc);
         llc.InsertSort();
+        Display(llc);
+
+        cout << "Merging llc into ll ..." << endl;
+        ll.Merge(llc);
+        Display(ll);
         Display(llc);
     }
     catch (const char *&ex)
