@@ -55,6 +55,14 @@ void Display(LinearList<T> &list, ostream &output = cout)
 }
 
 template <class T>
-void Split(Linear)
+void Subtract(LinearList<T> &la, LinearList<T> &lb)
+{
+    for (int i = 1; i <= la.Count(); i++)
+    {
+        T data = la.Get(i);
+        if (-1 != lb.Locate(data))
+            la.Delete(i);
+    }
+}
 
 #endif
