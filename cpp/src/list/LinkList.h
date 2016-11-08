@@ -40,6 +40,7 @@ class LinkList : public LinearList<T>
     virtual LinkList<T> Split();
     virtual void InsertSort();
     virtual void Merge(LinkList<T> &);
+    virtual LinkList<T> Intersect(const LinkList<T> &);
 
   protected:
     virtual void CreateFrom(const LinkList<T> &);
@@ -274,8 +275,8 @@ void LinkList<T>::InsertSort()
     }
 }
 
-// Merge a link list in ascending order.
-// Before merging, make sure that this has been sorted in ascending order,
+// Merge a link list sorted in ascending order.
+// Before merging, make sure that both lists have been sorted in ascending order,
 // if not, call InsertSort() prior to call this method.
 template <class T>
 void LinkList<T>::Merge(LinkList<T> &listToMerge)
@@ -284,7 +285,7 @@ void LinkList<T>::Merge(LinkList<T> &listToMerge)
 
     a = head->next;
     b = listToMerge.head->next;
-    c = head; 
+    c = head;
 
     while (a && b)
     {
@@ -306,6 +307,43 @@ void LinkList<T>::Merge(LinkList<T> &listToMerge)
 
     this->length += listToMerge.Count();
     listToMerge.length = 0;
+}
+
+template <class T>
+LinkList<T> LinkList<T>::Intersect(const LinkList<T> &listB)
+{
+    LinkList<T> listC;
+
+    LinkListNode<T> *a, *b, *c, *t;
+    a = head->next;
+    b = listB.head->next;
+    c = listC.head;
+
+    while (a && b)
+    {
+        if (a->data < b->data)
+        {
+            a = a->next;
+        }
+        else if (b->data < a->data)
+        {
+            b = b->next;
+        }
+        else // a->data equals to b->data
+        {
+            t = new LinkListNode<T>;
+            t->data = a->data;
+
+            c->next = t; // add to link list C
+            c = c->next; // move to rear
+            listC.length ++;
+
+            a = a->next;
+            b = b->next;
+        }
+    }
+
+    return listC;
 }
 
 #endif
