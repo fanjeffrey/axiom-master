@@ -33,9 +33,16 @@ int main()
     }
     Display(llb);
 
+    cout << "Subtract list B from list A ..." << endl;
+    Subtract(lla, llb);
+    Display(lla);
+
     cout << "Union list A and list B ..." << endl;
     Union(lla, llb);
     Display(lla);
+
+    //
+    cout << "\n----------------------\n";
 
     //
     SeqList<int> sla;
@@ -63,6 +70,10 @@ int main()
         cout << val << " inserted. length = " << slb.Count() << endl;
     }
     Display(slb);
+
+    cout << "Subtract list B from list A ..." << endl;
+    Subtract(sla, slb);
+    Display(sla);
 
     cout << "Union list A and list B ..." << endl;
     Union(sla, slb);
