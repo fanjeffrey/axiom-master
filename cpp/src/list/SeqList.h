@@ -12,6 +12,7 @@ class SeqList : public LinearList<T>
     virtual void Insert(T value, int index);
     virtual T Delete(int index);
     virtual void Reverse();
+    virtual void Subtract(const SeqList<T> &);
 
   protected:
     T elements[Capacity];
@@ -79,6 +80,26 @@ void SeqList<T>::Reverse()
         T temp = elements[i];
         elements[i] = elements[this->length - 1 - i];
         elements[this->length - 1 - i] = temp;
+    }
+}
+
+template <class T>
+void SeqList<T>::Subtract(const SeqList<T> &listB)
+{
+    for (int i = 0; i < this->length; i++)
+    {
+        for (int j = 0; j < listB.length; j++)
+        {
+            if (elements[i] == listB.elements[j])
+            {
+                for (int k = i; k < this->length; k++)
+                {
+                    elements[k] = elements[k + 1];
+                }
+
+                this->length--;
+            }
+        }
     }
 }
 

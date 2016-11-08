@@ -125,6 +125,12 @@ int main()
         llc.InsertSort();
         Display(llc);
 
+        cout << "Intersecting on llb and llc ..." << endl;
+        Display(llb);
+        Display(llc);
+        LinkList<int> lld = llb.Intersect(llc);
+        Display(lld);
+
         cout << "Merging llc into ll ..." << endl;
         ll.Merge(llc);
         Display(ll);

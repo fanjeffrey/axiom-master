@@ -90,6 +90,18 @@ int main()
         cout << "Deleting 11 ..." << endl;
         isl.Delete(11);
         Display(isl);
+
+        SeqList<int> isl2;
+        for (int i = 1; i <= 7; i++)
+        {
+            int val = i * 2;
+            isl2.Insert(val, isl2.Count() + 1);
+            cout << val << " inserted. length = " << isl2.Count() << endl;
+        }
+        Display(isl2);
+        cout << "Subtracting isl2 from isl ..." << endl;
+        isl.Subtract(isl2);
+        Display(isl);
     }
     catch (const char *ex)
     {
