@@ -10,7 +10,7 @@ template <typename T>
 class SeqQueue : public Queue<T>
 {
   public:
-    virtual void Enqueue(T &e);
+    virtual void Enqueue(T &);
     virtual void Dequeue();
     virtual T &GetFront();
     virtual bool IsEmpty() { return front == rear; }
