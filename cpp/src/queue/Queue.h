@@ -9,7 +9,7 @@ template <typename T>
 class Queue
 {
   public:
-    virtual void Enqueue(T &e) = 0;
+    virtual void Enqueue(T &) = 0;
     virtual void Dequeue() = 0;
     virtual T &GetFront() = 0;
     virtual bool IsEmpty() = 0;
