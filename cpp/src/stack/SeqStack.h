@@ -2,6 +2,7 @@
 #define SeqStack_H
 
 #include <vector>
+#include <sstream>
 #include "Stack.h"
 
 using namespace std;
@@ -15,6 +16,7 @@ class SeqStack : public Stack<T>
     virtual T &GetTop();
     virtual bool IsEmpty();
     virtual bool IsFull();
+    virtual string ToString();
 
   private:
     vector<T> elements;
@@ -23,6 +25,11 @@ class SeqStack : public Stack<T>
 template <typename T>
 void SeqStack<T>::Push(T &e)
 {
+    if (IsFull())
+    {
+        throw "Error: the stack is full.";
+    }
+
     elements.push_back(e);
 }
 
@@ -35,19 +42,39 @@ void SeqStack<T>::Pop()
 template <typename T>
 T &SeqStack<T>::GetTop()
 {
-    return elements[elements.size()];
+    return elements[elements.size() - 1];
 }
 
 template <typename T>
-bool SeqStack<T>::IsEmpty()
+inline bool SeqStack<T>::IsEmpty()
 {
-    return elements.empty();//.size() == 0;
+    return elements.empty(); //.size() == 0;
 }
 
 template <typename T>
-bool SeqStack<T>::IsFull()
+inline bool SeqStack<T>::IsFull()
 {
     return elements.size() >= elements.max_size();
+}
+
+template <typename T>
+string SeqStack<T>::ToString()
+{
+    ostringstream os;
+    if (IsEmpty())
+    {
+        os << "0 elements." << endl;
+    }
+    else
+    {
+        os << elements.size() << " elements:";
+        for (int i = elements.size() - 1; i >= 0; i--)
+        {
+            os << " " << elements[i];
+        }
+    }
+
+    return os.str();
 }
 
 #endif
