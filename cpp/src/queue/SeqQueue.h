@@ -4,7 +4,7 @@
 #include <sstream>
 #include "Queue.h"
 
-#define QueueSize 10
+#define QueueSize 1000
 
 template <typename T>
 class SeqQueue : public Queue<T>
