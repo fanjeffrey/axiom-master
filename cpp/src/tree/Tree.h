@@ -119,10 +119,14 @@ string Tree<T>::PreOrder()
         {
             t = t->lchild;
         }
-        else
+        else if (top > -1)
         {
             t = s[top];
             top--;
+        }
+        else
+        {
+            t = nullptr;
         }
     }
 
