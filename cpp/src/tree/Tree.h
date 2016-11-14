@@ -99,34 +99,22 @@ string Tree<T>::PreOrder()
         return "The tree is empty.";
     }
 
-    TreeNode<T> *s[100];
+    TreeNode<T> *stack[100];
     int top = -1;
 
     ostringstream os;
     os << "Nodes in pre-order:";
 
-    TreeNode<T> *t = root;
-    while (t)
+    stack[++top] = root;
+    TreeNode<T> *t;
+    while (top > -1)
     {
-        os << " " << t->data;
-        if (t->rchild)
+        t = stack[top--];
+        if (t)
         {
-            top++;
-            s[top] = t->rchild;
-        }
-
-        if (t->lchild)
-        {
-            t = t->lchild;
-        }
-        else if (top > -1)
-        {
-            t = s[top];
-            top--;
-        }
-        else
-        {
-            t = nullptr;
+            os << " " << t->data;
+            stack[++top] = t->rchild;
+            stack[++top] = t->lchild;
         }
     }
 
