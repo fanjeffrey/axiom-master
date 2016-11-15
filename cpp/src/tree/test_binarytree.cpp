@@ -5,6 +5,10 @@ using namespace std;
 
 int main()
 {
+    BinaryTree<char> t0;
+    cout << ": " << endl
+         << t0.PreOrder() << endl;
+
     string glist1 = "(A(B,C))";
     BinaryTree<char> t1(glist1);
     cout << glist1 << ": " << endl
