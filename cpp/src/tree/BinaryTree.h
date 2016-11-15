@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>
 #include "../stack/SeqStack.h"
+#include "../queue/SeqQueue.h"
 
 using namespace std;
 
@@ -35,6 +36,8 @@ class BinaryTree
     virtual string InOrder();
     virtual string InOrderWithArray();
     virtual string InOrderWithStack();
+    virtual string LevelOrder();
+    virtual string LevelOrderWithArray();
 
   public:
     BinaryTree() { root = CreateFromConsole(); }
@@ -340,6 +343,81 @@ string BinaryTree<T>::InOrderWithStack()
             stack.Pop();
 
             stack.Push(t->rchild);
+        }
+    }
+
+    return os.str();
+}
+
+// Level-order traversal
+template <typename T>
+string BinaryTree<T>::LevelOrder()
+{
+    if (root == nullptr)
+    {
+        return "The tree is empty.";
+    }
+
+    ostringstream os;
+    os << "Nodes in level-order:";
+    os << " " << root->data;
+
+    BinaryTreeNode<T> *t;
+    SeqQueue<BinaryTreeNode<T> *> queue;
+    queue.Enqueue(root);
+    while (!queue.IsEmpty())
+    {
+        t = queue.GetFront();
+        queue.Dequeue();
+
+        if (t->lchild)
+        {
+            os << " " << t->lchild->data;
+            queue.Enqueue(t->lchild);
+        }
+
+        if (t->rchild)
+        {
+            os << " " << t->rchild->data;
+            queue.Enqueue(t->rchild);
+        }
+    }
+
+    return os.str();
+}
+
+// Level-order traversal with array
+template <typename T>
+string BinaryTree<T>::LevelOrderWithArray()
+{
+    if (root == nullptr)
+    {
+        return "The tree is empty.";
+    }
+
+    ostringstream os;
+    os << "Nodes in level-order:";
+    os << " " << root->data;
+
+    BinaryTreeNode<T> *t;
+    int front = 0;
+    int rear = 0;
+    BinaryTreeNode<T> *queue[100];
+    queue[rear++] = root;
+    while (front != rear)
+    {
+        t = queue[front++];
+
+        if (t->lchild)
+        {
+            os << " " << t->lchild->data;
+            queue[rear++] = t->lchild;
+        }
+
+        if (t->rchild)
+        {
+            os << " " << t->rchild->data;
+            queue[rear++] = t->rchild;
         }
     }
 

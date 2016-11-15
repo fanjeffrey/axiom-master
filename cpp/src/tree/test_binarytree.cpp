@@ -26,14 +26,12 @@ int main()
     cout << glist2 << ": " << endl
          << t2.PreOrder() << endl
          << t2.PreOrderWithArray() << endl
-         << t2.PreOrderWithArray() << endl;
-
-    //
-    BinaryTree<char> t3(glist2);
-    cout << glist2 << ": " << endl
-         << t3.InOrder() << endl
-         << t3.InOrderWithArray() << endl
-         << t3.InOrderWithStack() << endl;
+         << t2.PreOrderWithArray() << endl
+         << t2.InOrder() << endl
+         << t2.InOrderWithArray() << endl
+         << t2.InOrderWithStack() << endl
+         << t2.LevelOrder() << endl
+         << t2.LevelOrderWithArray() << endl;
 
     return 0;
 }
