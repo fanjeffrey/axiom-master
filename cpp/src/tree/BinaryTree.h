@@ -33,8 +33,8 @@ class BinaryTree
     virtual string PreOrderWithArray();
     virtual string PreOrderWithStack();
     virtual string InOrder();
-    //virtual string InOrderWithArray();
-    //virtual string InOrderWithStack();
+    virtual string InOrderWithArray();
+    virtual string InOrderWithStack();
 
   public:
     BinaryTree() { root = CreateFromConsole(); }
@@ -255,7 +255,7 @@ string BinaryTree<T>::InOrder()
     }
 
     ostringstream os;
-    os << "Nodes in in-order with recursion :";
+    os << "Nodes in in-order with recursion:";
 
     PrintInOrder(root, os);
 
@@ -271,6 +271,79 @@ void BinaryTree<T>::PrintInOrder(BinaryTreeNode<T> *n, ostringstream &os)
         os << " " << n->data;
         PrintInOrder(n->rchild, os);
     }
+}
+
+// In-order with array
+template <typename T>
+string BinaryTree<T>::InOrderWithArray()
+{
+    if (root == nullptr)
+    {
+        return "The tree is empty.";
+    }
+
+    ostringstream os;
+    os << "Nodes in pre-order with array:";
+
+    int top = -1;
+    BinaryTreeNode<T> *stack[100];
+    stack[++top] = root;
+    while (top > -1)
+    {
+        while (stack[top])
+        {
+            top++;
+            stack[top] = stack[top - 1]->lchild;
+        }
+
+        top--;
+
+        if (top > -1)
+        {
+            os << " " << stack[top]->data;
+            stack[top] = stack[top]->rchild;
+        }
+    }
+
+    return os.str();
+}
+
+// In-order with stack
+template <typename T>
+string BinaryTree<T>::InOrderWithStack()
+{
+    if (root == nullptr)
+    {
+        return "The tree is empty.";
+    }
+
+    ostringstream os;
+    os << "Nodes in in-order with stack:";
+
+    BinaryTreeNode<T> *t;
+    SeqStack<BinaryTreeNode<T> *> stack;
+    stack.Push(root);
+    while (!stack.IsEmpty())
+    {
+        while (stack.GetTop())
+        {
+            stack.Push(stack.GetTop()->lchild);
+        }
+
+        stack.Pop();
+
+        if (!stack.IsEmpty())
+        {
+            t = stack.GetTop();
+            os << " " << t->data;
+
+            stack.Pop();
+
+            stack.Push(t->rchild);
+        }
+    }
+
+    return os.str();
 }
 
 #endif
