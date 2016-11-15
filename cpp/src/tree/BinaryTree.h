@@ -28,12 +28,13 @@ class BinaryTreeNode
 template <typename T>
 class BinaryTree
 {
-    static BinaryTreeNode<T> *CreateFromConsole();
-
   public:
     virtual string PreOrder();
     virtual string PreOrderWithArray();
     virtual string PreOrderWithStack();
+    virtual string InOrder();
+    //virtual string InOrderWithArray();
+    //virtual string InOrderWithStack();
 
   public:
     BinaryTree() { root = CreateFromConsole(); }
@@ -41,8 +42,10 @@ class BinaryTree
     BinaryTree(string &glist) { root = CreateFromGList(glist); }
 
   protected:
+    virtual BinaryTreeNode<T> *CreateFromConsole();
     virtual BinaryTreeNode<T> *CreateFromGList(string &);
-    virtual void Print(BinaryTreeNode<T> *, ostringstream &);
+    virtual void PrintPreOrder(BinaryTreeNode<T> *, ostringstream &);
+    virtual void PrintInOrder(BinaryTreeNode<T> *, ostringstream &);
 
   protected:
     BinaryTreeNode<T> *root;
@@ -154,7 +157,7 @@ BinaryTreeNode<T> *BinaryTree<T>::CreateFromGList(string &glist)
     return r;
 }
 
-// PreOrder with recursion
+// Pre-order with recursion
 template <typename T>
 string BinaryTree<T>::PreOrder()
 {
@@ -166,23 +169,23 @@ string BinaryTree<T>::PreOrder()
     ostringstream os;
     os << "Nodes in pre-order with recursion :";
 
-    Print(root, os);
+    PrintPreOrder(root, os);
 
     return os.str();
 }
 
 template <typename T>
-void BinaryTree<T>::Print(BinaryTreeNode<T> *n, ostringstream &os)
+void BinaryTree<T>::PrintPreOrder(BinaryTreeNode<T> *n, ostringstream &os)
 {
     if (n)
     {
         os << " " << n->data;
-        Print(n->lchild, os);
-        Print(n->rchild, os);
+        PrintPreOrder(n->lchild, os);
+        PrintPreOrder(n->rchild, os);
     }
 }
 
-// PreOrder with array
+// Pre-order with array
 template <typename T>
 string BinaryTree<T>::PreOrderWithArray()
 {
@@ -212,7 +215,7 @@ string BinaryTree<T>::PreOrderWithArray()
     return os.str();
 }
 
-// PreOrder with stack
+// Pre-order with stack
 template <typename T>
 string BinaryTree<T>::PreOrderWithStack()
 {
@@ -240,6 +243,34 @@ string BinaryTree<T>::PreOrderWithStack()
     }
 
     return os.str();
+}
+
+// In-order with recursion
+template <typename T>
+string BinaryTree<T>::InOrder()
+{
+    if (root == nullptr)
+    {
+        return "The tree is empty.";
+    }
+
+    ostringstream os;
+    os << "Nodes in in-order with recursion :";
+
+    PrintInOrder(root, os);
+
+    return os.str();
+}
+
+template <typename T>
+void BinaryTree<T>::PrintInOrder(BinaryTreeNode<T> *n, ostringstream &os)
+{
+    if (n)
+    {
+        PrintInOrder(n->lchild, os);
+        os << " " << n->data;
+        PrintInOrder(n->rchild, os);
+    }
 }
 
 #endif
