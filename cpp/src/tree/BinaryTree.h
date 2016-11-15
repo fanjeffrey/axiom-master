@@ -28,25 +28,84 @@ class BinaryTreeNode
 template <typename T>
 class BinaryTree
 {
+    static BinaryTreeNode<T> *CreateFromConsole();
+
   public:
     virtual string PreOrder();
     virtual string PreOrderWithArray();
     virtual string PreOrderWithStack();
 
   public:
-    BinaryTree() : root(nullptr) {}
-    BinaryTree(string &glist) { root = CreateFrom(glist); }
+    BinaryTree() { root = CreateFromConsole(); }
+    BinaryTree(BinaryTreeNode<T> *r) : root(r){};
+    BinaryTree(string &glist) { root = CreateFromGList(glist); }
 
   protected:
-    virtual BinaryTreeNode<T> *CreateFrom(string &);
+    virtual BinaryTreeNode<T> *CreateFromGList(string &);
     virtual void Print(BinaryTreeNode<T> *, ostringstream &);
 
   protected:
     BinaryTreeNode<T> *root;
 };
 
+// Creates from console input, like "ABC@D@E#".
+// @ means a NULL node.
+// # means end.
 template <typename T>
-BinaryTreeNode<T> *BinaryTree<T>::CreateFrom(string &glist)
+BinaryTreeNode<T> *BinaryTree<T>::CreateFromConsole()
+{
+    BinaryTreeNode<T> *root, *n;
+    root = nullptr;
+
+    BinaryTreeNode<T> *queue[100];
+    int front = 1, rear = 0;
+
+    char ch = getchar();
+    while (ch != '#')
+    {
+        n = nullptr;
+
+        if (ch != '@')
+        {
+            n = new BinaryTreeNode<T>;
+            n->data = T(ch);
+            n->lchild = n->rchild = nullptr;
+        }
+
+        queue[++rear] = n;
+
+        if (rear == 1)
+        {
+            root = n;
+        }
+        else
+        {
+            if (n && queue[front])
+            {
+                if (rear % 2 == 0)
+                {
+                    queue[front]->lchild = n;
+                }
+                else
+                {
+                    queue[front]->rchild = n;
+                }
+            }
+
+            if (rear % 2 != 0)
+            {
+                front++;
+            }
+        }
+
+        ch = getchar();
+    }
+
+    return root;
+}
+
+template <typename T>
+BinaryTreeNode<T> *BinaryTree<T>::CreateFromGList(string &glist)
 {
     BinaryTreeNode<T> *arr[100];
     BinaryTreeNode<T> *p = nullptr, *r = nullptr;
@@ -105,7 +164,7 @@ string BinaryTree<T>::PreOrder()
     }
 
     ostringstream os;
-    os << "Nodes in pre-order:";
+    os << "Nodes in pre-order with recursion :";
 
     Print(root, os);
 
@@ -133,7 +192,7 @@ string BinaryTree<T>::PreOrderWithArray()
     }
 
     ostringstream os;
-    os << "Nodes in pre-order:";
+    os << "Nodes in pre-order with array:";
 
     int top = -1;
     BinaryTreeNode<T> *stack[100];
@@ -163,7 +222,7 @@ string BinaryTree<T>::PreOrderWithStack()
     }
 
     ostringstream os;
-    os << "Nodes in pre-order:";
+    os << "Nodes in pre-order with stack:";
 
     SeqStack<BinaryTreeNode<T> *> stack;
     stack.Push(root);
