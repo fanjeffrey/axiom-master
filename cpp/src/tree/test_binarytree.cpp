@@ -21,7 +21,7 @@ int main()
          << t1.PreOrderWithStack() << endl;
 
     //
-    string glist2 = "(A(B(D,E),C(,F)))";
+    string glist2 = "(A(B(D(G,H),E),C(,F)))";
     BinaryTree<char> t2(glist2);
     cout << glist2 << ": " << endl
          << t2.PreOrder() << endl
@@ -31,7 +31,8 @@ int main()
          << t2.InOrderWithArray() << endl
          << t2.InOrderWithStack() << endl
          << t2.LevelOrder() << endl
-         << t2.LevelOrderWithArray() << endl;
+         << t2.LevelOrderWithArray() << endl
+         << "Depth: " << t2.GetDepth() << endl;
 
     return 0;
 }

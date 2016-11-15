@@ -38,6 +38,7 @@ class BinaryTree
     virtual string InOrderWithStack();
     virtual string LevelOrder();
     virtual string LevelOrderWithArray();
+    virtual int GetDepth();
 
   public:
     BinaryTree() { root = CreateFromConsole(); }
@@ -49,6 +50,7 @@ class BinaryTree
     virtual BinaryTreeNode<T> *CreateFromGList(string &);
     virtual void PrintPreOrder(BinaryTreeNode<T> *, ostringstream &);
     virtual void PrintInOrder(BinaryTreeNode<T> *, ostringstream &);
+    virtual int GetDepth(BinaryTreeNode<T> *);
 
   protected:
     BinaryTreeNode<T> *root;
@@ -422,6 +424,28 @@ string BinaryTree<T>::LevelOrderWithArray()
     }
 
     return os.str();
+}
+
+//
+template <typename T>
+int BinaryTree<T>::GetDepth()
+{
+    return GetDepth(root);
+}
+
+template <typename T>
+int BinaryTree<T>::GetDepth(BinaryTreeNode<T> *node)
+{
+    if (!node)
+        return 0;
+
+    int depthLeft = GetDepth(node->lchild);
+    int depthRight = GetDepth(node->rchild);
+
+    if (depthLeft > depthRight)
+        return depthLeft + 1;
+    else
+        return depthRight + 1;
 }
 
 #endif
