@@ -1,5 +1,6 @@
 #include <iostream>
 #include "BinaryTree.h"
+#include "ThreadedBinaryTree.h"
 
 using namespace std;
 
@@ -51,6 +52,11 @@ int main()
          << "C.Level = " << t2.GetLevel('C') << endl
          << "E.Level = " << t2.GetLevel('E') << endl
          << "H.Level = " << t2.GetLevel('H') << endl;
+
+    ThreadedBinaryTree<char> t3(glist2);
+    cout << glist2 << ": " << endl
+         << t2.InOrder() << endl;
+    t3.InOrderTraverse();
 
     return 0;
 }
