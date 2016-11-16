@@ -34,5 +34,23 @@ int main()
          << t2.LevelOrderWithArray() << endl
          << "Depth: " << t2.GetDepth() << endl;
 
+    cout << "Finding 'C'..., ";
+    BinaryTreeNode<char> *c = t2.Find('C');
+    if (c)
+        cout << "Found " << c->GetData() << " @" << c << "!" << endl;
+    else
+        cout << "Not found!" << endl;
+    cout << "Finding 'E'..., ";
+    BinaryTreeNode<char> *e = t2.Find('E');
+    if (e)
+        cout << "Found " << e->GetData() << " @" << e << "!" << endl;
+    else
+        cout << "Not found!" << endl;
+
+    cout << "A.Level = " << t2.GetLevel('A') << endl
+         << "C.Level = " << t2.GetLevel('C') << endl
+         << "E.Level = " << t2.GetLevel('E') << endl
+         << "H.Level = " << t2.GetLevel('H') << endl;
+
     return 0;
 }

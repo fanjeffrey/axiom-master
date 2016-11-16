@@ -16,6 +16,7 @@ class BinaryTreeNode
 {
   public:
     BinaryTreeNode() : lchild(nullptr), rchild(nullptr) {}
+    T GetData() { return data; }
 
   private:
     T data;
@@ -39,6 +40,8 @@ class BinaryTree
     virtual string LevelOrder();
     virtual string LevelOrderWithArray();
     virtual int GetDepth();
+    virtual BinaryTreeNode<T> *Find(const T &);
+    virtual int GetLevel(const T &);
 
   public:
     BinaryTree() { root = CreateFromConsole(); }
@@ -51,6 +54,8 @@ class BinaryTree
     virtual void PrintPreOrder(BinaryTreeNode<T> *, ostringstream &);
     virtual void PrintInOrder(BinaryTreeNode<T> *, ostringstream &);
     virtual int GetDepth(BinaryTreeNode<T> *);
+    virtual BinaryTreeNode<T> *Find(BinaryTreeNode<T> *, const T &);
+    virtual int GetLevel(BinaryTreeNode<T> *, const T &, int);
 
   protected:
     BinaryTreeNode<T> *root;
@@ -446,6 +451,70 @@ int BinaryTree<T>::GetDepth(BinaryTreeNode<T> *node)
         return depthLeft + 1;
     else
         return depthRight + 1;
+}
+
+//
+template <typename T>
+BinaryTreeNode<T> *BinaryTree<T>::Find(const T &t)
+{
+    return Find(root, t);
+}
+
+template <typename T>
+BinaryTreeNode<T> *BinaryTree<T>::Find(BinaryTreeNode<T> *n, const T &t)
+{
+    BinaryTreeNode<T> *p;
+
+    if (!n)
+    {
+        p = nullptr;
+    }
+    else if (n->data == t)
+    {
+        p = n;
+    }
+    else
+    {
+        p = Find(n->lchild, t);
+        if (!p)
+        {
+            p = Find(n->rchild, t);
+        }
+    }
+
+    return p;
+}
+
+//
+template <typename T>
+int BinaryTree<T>::GetLevel(const T &t)
+{
+    return GetLevel(root, t, 1);
+}
+
+template <typename T>
+int BinaryTree<T>::GetLevel(BinaryTreeNode<T> *n, const T &t, int levelToSearch)
+{
+    static int level = 0;
+
+    if (!n)
+    {
+        level = 0;
+    }
+    else if (n->data == t)
+    {
+        level = levelToSearch;
+    }
+    else
+    {
+        GetLevel(n->lchild, t, levelToSearch + 1); // go to the lchild at the next level
+        if (level == 0)
+        {
+            GetLevel(n->rchild, t, levelToSearch + 1); // go to the lchild at the next level
+        }
+    }
+
+    return level;
 }
 
 #endif
