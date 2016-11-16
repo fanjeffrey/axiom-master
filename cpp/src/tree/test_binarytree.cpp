@@ -57,6 +57,7 @@ int main()
     cout << glist2 << ": " << endl
          << t2.InOrder() << endl;
     t3.InOrderTraverse();
+    t3.ReverseInOrderTraverse();
 
     return 0;
 }
