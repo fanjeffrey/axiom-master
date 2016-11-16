@@ -29,8 +29,10 @@ template <typename T>
 class ThreadedBinaryTree
 {
   public:
+    virtual ThreadedBinaryTreeNode<T> *InOrderPrevious(ThreadedBinaryTreeNode<T> *);
     virtual ThreadedBinaryTreeNode<T> *InOrderNext(ThreadedBinaryTreeNode<T> *);
     virtual void InOrderTraverse(ostream &os = cout);
+    virtual void ReverseInOrderTraverse(ostream &os = cout);
 
   public:
     ThreadedBinaryTree(string &glist);
@@ -137,11 +139,31 @@ ThreadedBinaryTreeNode<T> *ThreadedBinaryTree<T>::InOrderNext(ThreadedBinaryTree
     }
     else
     {
-        n = n->rchild;
-        while (n->ltag == 0)
-            n = n->lchild;
+        ThreadedBinaryTreeNode<T> *t = n->rchild;
+        while (t->ltag == 0)
+            t = t->lchild;
 
-        return n;
+        return t;
+    }
+}
+
+template <typename T>
+ThreadedBinaryTreeNode<T> *ThreadedBinaryTree<T>::InOrderPrevious(ThreadedBinaryTreeNode<T> *n)
+{
+    if (!n)
+        return nullptr;
+
+    if (n->ltag == 1)
+    {
+        return n->lchild;
+    }
+    else
+    {
+        ThreadedBinaryTreeNode<T> *t = n->lchild;
+        while (t->rtag == 0)
+            t = t->rchild;
+
+        return t;
     }
 }
 
@@ -161,10 +183,37 @@ void ThreadedBinaryTree<T>::InOrderTraverse(ostream &os)
         {
             os << " " << t->data;
         } while (t = InOrderNext(t));
+
+        cout << endl;
     }
     else
     {
-        os << "The tree is empty.";
+        os << "The tree is empty." << endl;
+    }
+}
+
+template <typename T>
+void ThreadedBinaryTree<T>::ReverseInOrderTraverse(ostream &os)
+{
+    if (root)
+    {
+        ThreadedBinaryTreeNode<T> *t = root;
+        while (t->rtag == 0)
+        {
+            t = t->rchild;
+        }
+
+        os << "Reversing nodes in in-order threaded:";
+        do
+        {
+            os << " " << t->data;
+        } while (t = InOrderPrevious(t));
+
+        cout << endl;
+    }
+    else
+    {
+        os << "The tree is empty." << endl;
     }
 }
 
