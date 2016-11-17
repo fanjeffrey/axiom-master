@@ -6,28 +6,55 @@ typedef int KeyType;
 typedef struct
 {
     KeyType key;
-} RecType;
-typedef RecType SeqList[MAXSIZE + 1];
+    /*
+    other fields go here;
+    */
+} EntityType;
+typedef EntityType EntityList[MAXSIZE + 1];
 
-void InsertSort(SeqList R, int n)
+void InsertSort(EntityList entities, int countOfEntities)
 {
     int i, j;
-    for (int i = 2; i <= n; i++)
+    for (int i = 2; i <= countOfEntities; i++)
     {
-        if (R[i].key < R[i - 1].key)
+        if (entities[i].key < entities[i - 1].key)
         {
-            R[0] = R[i];
-            for (j = i - 1; R[0].key < R[j].key; j--)
+            entities[0] = entities[i];
+            for (j = i - 1; entities[0].key < entities[j].key; j--)
             {
-                R[j + 1] = R[j];
+                entities[j + 1] = entities[j];
             }
 
-            R[j + 1] = R[0];
+            entities[j + 1] = entities[0];
         }
     }
 }
 
 int main()
 {
+    EntityList entities;
+    int countOfEntities = 10;
+    int i;
+    for (i = 1; i <= countOfEntities; i++)
+    {
+        scanf("%d", &entities[i].key);
+    }
+
+    printf("Before sorting...\n");
+    for (i = 1; i <= countOfEntities; i++)
+    {
+        printf("%d ", entities[i].key);
+    }
+    printf("\n");
+
+    //
+    InsertSort(entities, countOfEntities);
+    printf("After insert sorting...\n");
+    for (i = 1; i <= countOfEntities; i++)
+    {
+        printf("%d ", entities[i].key);
+    }
+    printf("\n");
+
     return 0;
 }
