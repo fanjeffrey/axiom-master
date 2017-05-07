@@ -18,20 +18,20 @@ PCB * ready, * run, * finish;
 
 void print_table_header()
 {
-    cout << endl << "ProcessName\t CPUTime\t NeedTime\t Priority\t Status";    
+    cout << endl << "Process" << "\t" << "Used CPU Time" << "\t" << "Needed CPU Time" << "\t" << "Priority" << "\t" << "Status";    
 }
 
 void print_process(PCB * p)
 {
     if (p != NULL)
     {
-	cout << endl << p->name << "\t" << p->cputime << "\t" << p->needtime << "\t" << p->prio << "\t" << p->state;
+	cout << endl << p->name << "\t" << p->cputime << "\t\t" << p->needtime << "\t\t" << p->prio << "\t\t" << p->state;
     }
 }
 
 void print_all_processes()
 {
-    cout << endl << "--begin--" << endl;
+    cout << endl << "--begin--";
 
     print_table_header();
 
@@ -56,6 +56,13 @@ void print_all_processes()
 
 void enqueue_ready(PCB * process)
 {
+    if (process == NULL)
+    {
+	return;
+    }
+
+    process->state = 'W';
+
     if (ready == NULL)
     {
 	process->next = ready;
@@ -93,6 +100,8 @@ void enqueue_ready(PCB * process)
         process->next = cursor;
         ready = process;
     }
+
+    process = NULL;
 }
 
 void dequeue_ready()
@@ -103,6 +112,14 @@ void dequeue_ready()
         ready = ready->next;
         run->state = 'R';
     }
+}
+
+void enqueue_finish()
+{
+    run->state = 'F';
+    run->next = finish;
+    finish = run;
+    run = NULL;
 }
 
 void init_ready_queue()
@@ -134,41 +151,35 @@ void execute()
 {
     print_all_processes();
 
-    int i = 0;
-    run = ready;
+    int i = 1;
+    dequeue_ready();
     while(run != NULL)
     {
-	cout << "Time #" << i++ << endl;
-	print_process(run);
+	cout << endl << "Time #" << i << " starting ..." << endl;
 
         run->cputime += 10;
         run->needtime -= 10;
         run->prio -= 10;
 
-        if (run->needtime <= 0)
+	print_all_processes();
+
+        if (run->needtime == 0)
         {
-	    print_process(run);
-
-            run->state = 'F';
-            run->next = finish;
-            finish = run;
-            run = NULL;
-
+	    enqueue_finish();
             dequeue_ready();
-	    
-	    print_process(run);
         }
         else if ((ready != NULL) && (run->prio < ready->prio))
         {
-            run->state = 'W';
-	    print_process(run);
             enqueue_ready(run);
             dequeue_ready();
-	    print_process(run);
         }
 
-	print_all_processes();
+	cout << endl << "Time #" << i++ << " done." << endl;
+
+	if (i == 50) break;
     }
+
+    print_all_processes();
 }
 
 int main()
