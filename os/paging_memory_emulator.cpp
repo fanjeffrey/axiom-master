@@ -2,190 +2,226 @@
 #include <iomanip>
 #include <string>
 
-#define N 6
-#define M 4
-
 using namespace std;
 
-struct page 
+struct page
 {
-    int lnumber;
-    int flag;
-    int pnumber;
-    int write;
-    int dnumber;
-} pages[N];
+	int page_no;
+	int memory_block_no;
+	int disk_block_no;
+	bool in_memory;
+	bool changed;
+};
 
-int p[M];
+struct instruction
+{
+	string name;
+	int address;
+};
+
+const int PAGE_TABLE_SIZE = 7;
+const int FIFO_QUEUE_SIZE = 4;
+const int INSTRUCTION_QUEUE_SIZE = 9;
+
+page page_table[PAGE_TABLE_SIZE];
+int fifo_queue[FIFO_QUEUE_SIZE];
+instruction instructions[INSTRUCTION_QUEUE_SIZE];
 int head;
-void initial(void);
-int do_mmap(int);
-void do_page_fault(int);
-void run_first_instruction(int);
-void run_a_instruction(int);
-void print_page_and_fifoqueue(void);
 
-main()
+void init_page_table(void);
+void init_fifo_queue(void);
+void init_instructions(void);
+void run_instructions(void);
+int parse_page_no(int);
+int translate_logic_address(int);
+void load_page(int);
+void print_page_table(void);
+void print_fifo_queue(void);
+
+int main()
 {
-    int laddress, paddress;
-    int lnumber, ad, pnumber;
-    
-    initial();
-    print_page_and_fifoqueue();
-    run_first_instruction(0x0000);
+	init_page_table();
+	init_fifo_queue();
+	init_instructions();
 
-    cout << "Enter the address of next instruction(0 ~ 32767):" << endl;
-    cin >> laddress;
-    while (laddress > 32767)
-    {
-        cout << "Error! The address must be within 0 ~ 32767" << endl;
-        cin >> laddress;
-    }
+	print_page_table();
+	print_fifo_queue();
 
-    while (laddress != -1)
-    {
-        lnumber = laddress >> 10;
-        if (pages[lnumber].flag == 1)
-        {
-            paddress = do_mmap(laddress);
-            cout << paddress << " <-- physical address" << endl;
-            run_a_instruction(paddress);
-            cout << "Will this instruction modify the page #" << lnumber << "? (y/n)";
-            char change;
-            cin >> change;
-            if (tolower(change) == 'y')
-            {
-                pages[lnumber].write = 1;
-                print_page_and_fifoqueue();
-            }
-        }
-        else // page fault
-        {
-            cout << lnumber << " <-- this page is not in the memory." << endl;
-            do_page_fault(lnumber);
-            continue;
-        }
+	run_instructions();
 
-        cout << "Enter the address of next instruction(0 ~ 32767):" << endl;
-        cin >> laddress;
-	while (laddress > 32767)
-        {
-            cout << "Error! The address must be within 0 ~ 32767" << endl;
-            cin >> laddress;
-        }
-    }
+	cout << endl << "Press Enter to exit." << endl;
+	cin.ignore();
+	cin.get();
 
-    cout << "Proccess end!" << endl;
-//    system("PAUSE");
-    return 0;
+	return 0;
 }
 
-void initial(void)
+void run_instructions()
 {
-    int i;
-    for(i = 0; i <= 5; i++)
-    {
-        pages[i].lnumber = i;
-        if (i <= M -1)
-        {
-            cout << "Enter the block number for the page #" << i << ":" << endl;
-            cin >> pages[i].pnumber;
-            pages[i].flag = 1;
-        }
-    }
+	cout << endl << "Starting to execute instructions ..." << endl;
 
-    head = 0;
-    for(i = 0; i <= M - 1; i++)
-    {
-        p[i] = i;
-    }
+	for (int i = 0; i < INSTRUCTION_QUEUE_SIZE; i++)
+	{
+		cout << endl << "INSTRUCTION #" << i << " " << instructions[i].name << " " << instructions[i].address << endl;
+
+		int page_no = parse_page_no(instructions[i].address);
+		if (!page_table[page_no].in_memory)// page fault, not in memory
+		{
+			load_page(page_no);
+		}
+
+		cout << "Translating logical address: " << instructions[i].address << " ..." << endl;
+		int physic_address = translate_logic_address(instructions[i].address);
+		cout << "Got physical address: " << physic_address << endl;
+		cout << ">> executing instruction: " << instructions[i].name << " @ " << physic_address << endl;
+		if (instructions[i].name == "save")
+		{
+			page_table[page_no].changed = true;
+		}
+
+		print_page_table();
+		print_fifo_queue();
+	}
 }
 
-void print_page_and_fifoqueue(void)
+void init_page_table(void)
 {
-    int i;
-    cout << "Page table :---------------------" << endl;
-    cout << setw(10) << "lnumber" << setw(9) 
-        << "flag" << setw(10) << "pnumber" << setw(10) <<  "write" << setw(10) << "dnumber" << endl;
-
-    for(i = 0; i <= N - 1; i++)
-    {
-        cout << setw(7) << pages[i].lnumber << setw(10) 
-            << pages[i].flag << setw(10) << pages[i].pnumber << setw(10) << pages[i].write << setw(10) << pages[i].dnumber << endl;
-    }
-
-    cout << "FIFO queue :---------------------" << endl;
-    cout << setw(10) << "NO" << setw(30) << "Page (lnumber)" << endl;
-    cout << "head = " << head << endl;
-    for(i = 0; i <= M - 1; i++)
-    {
-        cout << setw(10) << i << setw(15) << p[i] << endl;
-    }
+	for (int i = 0; i < PAGE_TABLE_SIZE; i++)
+	{
+		page_table[i].page_no = i;
+		page_table[i].changed = false;
+		page_table[i].disk_block_no = 100 + i;
+		if (i <= PAGE_TABLE_SIZE / 2)
+		{
+			page_table[i].in_memory = 1;
+			cout << "Enter the memory block number for the page #" << i << ":" << endl;
+			cin >> page_table[i].memory_block_no;
+		}
+	}
 }
 
-int do_mmap(int laddress)
+void init_fifo_queue(void)
 {
-    int lnumber, ad, pnumber, paddress;
-    lnumber = laddress >> 10;
-    ad = laddress & 0x3ff;
-    pnumber = pages[lnumber].pnumber;
-    paddress = pnumber << 10 | ad;
+	for (int i = 0; i < FIFO_QUEUE_SIZE; i++)
+	{
+		fifo_queue[i] = i;
+	}
 
-    return paddress;
+	head = 0;
 }
 
-void run_a_instruction(int paddress)
+void init_instructions(void)
 {
-    cout << paddress << " <-- the instruction at this address executed." << endl;
+	instructions[0].name = "add";
+	instructions[0].address = 0x111;
+
+	instructions[1].name = "add";
+	instructions[1].address = 0x444;
+
+	instructions[2].name = "save";
+	instructions[2].address = 0x888;
+
+	instructions[3].name = "load";
+	instructions[3].address = 0xddd;
+
+	instructions[4].name = "add";
+	instructions[4].address = 0x1111;
+
+	instructions[5].name = "save";
+	instructions[5].address = 0x1414;
+
+	instructions[6].name = "load";
+	instructions[6].address = 0x1818;
+
+	instructions[7].name = "add";
+	instructions[7].address = 0x999;
+
+	instructions[8].name = "save";
+	instructions[8].address = 0x777;
 }
 
-void run_first_instruction(int laddress)
+void print_page_table(void)
 {
-    int lnumber, ad, pnumber, paddress;
-    lnumber = laddress >> 10;
-    if (pages[lnumber].flag == 1)
-    {
-        paddress == do_mmap(laddress);
-    }
+	cout << "--------page table--------" << endl;
+	cout << setw(7) << "page_no"
+		<< setw(16) << "memory_block_no"
+		<< setw(15) << "disk_block_no"
+		<< setw(11) << "in_memory"
+		<< setw(9) << "changed" << endl;
 
-    cout << paddress << " <-- physical address" << endl;
-    run_a_instruction(paddress);
-    cout << "Will this instruction modify the page #" << lnumber << "? (y/n):";
-    char change;
-    cin >> change;
-    if (tolower(change) == 'y')
-    {
-        pages[lnumber].write = 1;
-        print_page_and_fifoqueue();
-    }
-
-    cout << endl << "====The first instruction executed.====" << endl;
+	for (int i = 0; i < PAGE_TABLE_SIZE; i++)
+	{
+		cout << setw(7) << page_table[i].page_no
+			<< setw(16) << page_table[i].memory_block_no
+			<< setw(15) << page_table[i].disk_block_no
+			<< setw(11) << page_table[i].in_memory
+			<< setw(9) << page_table[i].changed << endl;
+	}
 }
 
-void write_to_harddisk(int j)
+void print_fifo_queue(void)
 {
-    cout << j << " <-- Write the modified page back to disk." << endl;
+	cout << "--------FIFO queue--------" << endl;
+	cout << setw(7) << "#" << setw(10) << "page_no" << endl;
+
+	for (int i = 0; i < FIFO_QUEUE_SIZE; i++)
+	{
+		cout << setw(7) << i << setw(10) << fifo_queue[i] << endl;
+	}
+
+	cout << "FIFO head = " << head << endl;
 }
 
-void do_page_fault(int lnumber)
+int parse_page_no(int logical_address)
 {
-    int j;
-    j = p[head];
-    p[head] = lnumber;
-    head = (head + 1) % M;
+	cout << "Parsing page no from logical address: " << logical_address << " ..." << endl;
+	int page_no = logical_address >> 10;
+	cout << "Got page no: " << page_no << endl;
 
-    if (pages[j].write == 1)
-    {
-        write_to_harddisk(j);
-    }
-
-    pages[j].flag = 0;
-    pages[lnumber].flag = 1;
-    pages[lnumber].write = 0;
-    pages[lnumber].pnumber = pages[j].pnumber;
-
-    cout << lnumber << " <-- this page has been loaded in memory." << endl;
-    cout << "Press any key to view the new page table and FIFO queue ..." << endl;
-    //system("PAUSE");
-    print_page_and_fifoqueue();
+	return page_no;
 }
+
+int translate_logic_address(int logic_address)
+{
+	int page_no = logic_address >> 10;
+	int offset = logic_address & 0x3ff;
+	int memory_block_no = page_table[page_no].memory_block_no;
+	int physic_address = memory_block_no << 10 | offset;
+
+	return physic_address;
+}
+
+void save_to_disk(int page_no)
+{
+	cout << "#" << page_no << " <-- this page got changed, save it back to disk." << endl;
+}
+
+void load_page(int in_page_no)
+{
+	cout << "#" << in_page_no << " <-- this page is not in the memory. start swapping ..." << endl;
+
+	cout << "Checking FIFO queue ..." << endl;
+	int out_page_no = fifo_queue[head];
+	cout << "#" << out_page_no << " <-- this page is found at FIFO head, will be swapped out ..." << endl;
+	fifo_queue[head] = in_page_no;
+	head = (head + 1) % FIFO_QUEUE_SIZE;
+
+	// the page swapped out
+	if (page_table[out_page_no].changed)
+	{
+		save_to_disk(out_page_no);
+		page_table[out_page_no].changed = false;
+	}
+	page_table[out_page_no].in_memory = false;
+	cout << "#" << out_page_no << " <-- this page has been swapped out." << endl;
+
+	// the page swapped in
+	page_table[in_page_no].memory_block_no = page_table[out_page_no].memory_block_no;
+	page_table[in_page_no].changed = false;
+	page_table[in_page_no].in_memory = true;
+	cout << "#" << in_page_no << " <-- this page has been swapped in." << endl;
+
+	print_page_table();
+	print_fifo_queue();
+}
+
