@@ -4,12 +4,88 @@ import java.lang.Thread;
 
 public class Program {
     public static void main(String[] args) {
-        // new Echo().run();
+        runTicketSystem();
+    }
+
+    private static void runTicketSystem() {
+        Station sta1 = new Station("Station #1");
+        Station sta2 = new Station("Station #2");
+        Station sta3 = new Station("Station #3");
+        sta1.start();
+        sta2.start();
+        sta3.start();
+    }
+
+    private static String reverseString(String stringToReverse) {
+        if (stringToReverse == null)
+            return null;
+
+        int length = stringToReverse.length();
+        if (length == 0)
+            return "";
+
+        char[] chars = new char[length];
+
+        for (int index = 0; index < length; index++)
+            chars[length - index - 1] = stringToReverse.charAt(index);
+
+        return new String(chars);
+    }
+
+    void runFactory() {
         Factory f = new Factory();
         Producer w = new Producer(f);
         w.start();
         Consumer r = new Consumer(f);
         r.start();
+    }
+}
+
+class Station extends Thread {
+    private static int TicketNumber = 20;
+    private static Object locker = "locker";
+
+    public Station(String name) {
+        super(name);
+    }
+
+    public void run() {
+        while (TicketNumber > 0) {
+            sell();
+            try{sleep(100);}
+            catch(InterruptedException ex){
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private void sell()    {
+        if (TicketNumber <= 0)
+            System.out.println(getName() + " - all tickets are sold out.");
+
+        synchronized (locker) {
+            System.out.println(getName() + " - sold out ticket #" + TicketNumber + ".");
+            TicketNumber--;
+        }
+    }
+}
+
+abstract class Animal {
+    abstract void move();
+
+    public void eat() {
+    }
+}
+
+interface Flyable {
+    void fly();
+}
+
+class Bird implements Flyable {
+    private boolean _isFlying;
+
+    public void fly() {
+        _isFlying = true;
     }
 }
 
