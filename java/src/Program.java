@@ -59,11 +59,14 @@ class Station extends Thread {
         }
     }
 
-    private void sell()    {
-        if (TicketNumber <= 0)
-            System.out.println(getName() + " - all tickets are sold out.");
-
+    private void sell(){
         synchronized (locker) {
+            if (TicketNumber <= 0)
+            {
+                System.out.println(getName() + " - all tickets are sold out.");
+                return;
+            }
+            
             System.out.println(getName() + " - sold out ticket #" + TicketNumber + ".");
             TicketNumber--;
         }
