@@ -40,8 +40,8 @@ And the little girl,
 she's my great-grandmother, Mama Coco.
 
 [Music]
-[Meguel running]
-[Meguel puffing and panting]
+[Miguel running]
+[Miguel puffing and panting]
 
 [Townspeople]
 There he is!
@@ -59,8 +59,8 @@ Ah! I need to see Mama Coco, please!
 Huh! What are you doing with that?
 Give it to me!
 Miguel, Stop.
-Meguel! Meguel?
-Meguel!
+Miguel! Miguel?
+Miguel!
 
 [Miguel]
 Mama Coco?
