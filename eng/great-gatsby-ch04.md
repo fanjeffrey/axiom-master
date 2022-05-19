@@ -1,4 +1,4 @@
-# Chapter 3, The "Excitement"
+# Chapter 4, The "Excitement"
 
 Tom’s apartment was small and on the top floor. The living room was crowded to the doors with a set of tapestried furniture entirely too large for it. Tom brought out a bottle of Whisky, while Myrtle called up her sister on the phone.
 
