@@ -6,9 +6,7 @@ namespace Puzzles
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-
-            new UintMedianFinderDemo().DemoWith1BillionData();
+            Console.WriteLine("Welcome to Puzzles!");
 
             Console.WriteLine("Press Enter to exit...");
             Console.ReadLine();

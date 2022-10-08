@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Puzzles.Tests
 {
     [TestClass]
-    public class MedianFinderTests
+    public partial class MedianFinderTests
     {
         private UintMedianFinder _finder;
 
@@ -178,7 +178,6 @@ namespace Puzzles.Tests
         public void FindMedian_ShouldReturnTheMedian_WhenAllNumbersAreSameAndTheLengthIsEven(uint theInteger)
         {
             // arrange
-            var length = Math.Max(new Random().Next(20 * 10000), 2);
             var sources = new uint[10];
             for (int i = 0; i < sources.Length; i++)
             {

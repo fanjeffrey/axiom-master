@@ -4,69 +4,6 @@ using System.IO;
 
 namespace Puzzles
 {
-    public class UintMedianFinderDemo
-    {
-        public void DemoWith1BillionData()
-        {
-            // Arrange
-            var billion = 10000 * 10000 * 10;
-            var maxAvailableMemoryInMB = 1024;
-            var filePath = @"random-numbers-1billion.data";
-            var minValue = uint.MinValue;
-            var maxValue = uint.MaxValue;
-            var expectedMedian = maxValue / 2;
-            GenerateUintFile(filePath, expectedMedian, billion);
-
-            var median = new UintMedianFinder(maxAvailableMemoryInMB).FindMedian(filePath, minValue, maxValue);
-
-            Console.WriteLine($"the median is: {median}");
-        }
-
-        private static void GenerateUintFile(string filePath, uint expectedMedian, long lengthOfNumbers)
-        {
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                using (var writer = new BinaryWriter(stream))
-                {
-                    var batchSize = 1000 * 1000;
-                    var batch = 0;
-                    while (batch * batchSize < lengthOfNumbers)
-                    {
-                        var numbers = new uint[batchSize];
-                        InitUintArray(numbers);
-                        if (batch == 0) numbers[0] = expectedMedian;
-                        WriteToFile(writer, numbers);
-
-                        batch++;
-                    }
-
-                    if (lengthOfNumbers % batchSize != 0)
-                    {
-                        var numbers = new uint[lengthOfNumbers % batch];
-                        InitUintArray(numbers);
-                        WriteToFile(writer, numbers);
-                    }
-                }
-            }
-        }
-
-        private static void InitUintArray(uint[] numbers)
-        {
-            var random = new Random();
-            for (long i = 0; i < numbers.Length; i++)
-            {
-                numbers[i] = i % 2 == 0 ? (uint)random.Next() : int.MaxValue + (uint)random.Next();
-            }
-        }
-
-        private static void WriteToFile(BinaryWriter writer, uint[] numbers)
-        {
-            var bytes = new byte[numbers.Length * sizeof(uint)];
-            Buffer.BlockCopy(numbers, 0, bytes, 0, bytes.Length);
-            writer.Write(bytes);
-        }
-    }
-
     public class UintMedianFinder
     {
         private const int DefaultMemoryLimitInMB = 1024;
@@ -169,7 +106,7 @@ namespace Puzzles
                     long countingTo = medianPosition - partition.CountingFrom;
 
                     var median = partitions.GetPartition(countingTo).StartValue + partition.StartValue;
-                    Debug.WriteLine($"median: {median}");
+                    Debug.WriteLine($"median #{(isMedian2 ? "2" : "1")}: {median}");
 
                     return median;
                 }
