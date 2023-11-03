@@ -25,20 +25,20 @@ public class LeetCode300
         if (target > list[list.Count - 1]) { list.Add(target); return; }
         if (target < list[0]) { list[0] = target; return; }
 
-        var left = 0;
-        var right = list.Count - 1;
+        var l = 0;
+        var r = list.Count - 1;
 
-        while (left <= right)
+        while (l <= r)
         {
-            var middle = (left + right) / 2;
-            if (list[middle] < target)
-                left = middle + 1;
-            else if (list[middle] > target)
-                right = middle - 1;
+            var m = l + (r - l) / 2;
+            if (list[m] < target)
+                l = m + 1;
+            else if (list[m] > target)
+                r = m - 1;
             else return;
         }
 
-        list[left] = target;
+        list[l] = target;
     }
 
     public int SovleWithTabulation(int[] numbers)
