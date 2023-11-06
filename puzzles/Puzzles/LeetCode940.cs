@@ -9,16 +9,16 @@ public class LeetCode940
     {
         var mod = (int)1e9 + 7;
         var letters = new Dictionary<char, int>();
-        foreach(var c in "abcdefghijklmnopqrstuvwxyz") letters[c] = 0;
-        var totalCount = 0;
-        int newCount;
-        for(var i = 0; i < s.Length; i ++)
+        foreach (var c in "abcdefghijklmnopqrstuvwxyz") letters[c] = 0;
+        var last = 0;
+        var current = 0;
+        for (var i = 0; i < s.Length; i++)
         {
-            newCount = totalCount + 1;
-            totalCount = ((totalCount + newCount) % mod - letters[s[i]] % mod + mod) % mod;
-            letters[s[i]] = newCount;
+            current = last + 1;
+            last = ((last + current) % mod - letters[s[i]] % mod + mod) % mod;
+            letters[s[i]] = current;
         }
 
-        return (totalCount + mod) % mod;
+        return last % mod;
     }
 }
